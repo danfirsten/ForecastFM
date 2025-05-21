@@ -10,33 +10,30 @@ def getWeatherCode(lon, lat):
     (https://open-meteo.com)
     
     Args
-    ---
+    ----
     lon: int
         Longitude
     lat: int
         Latitude
 
     Returns
-    ------
-    int 
-        The weather code
+    -------
+    str 
+        String containing the weather code
 
     '''
 
     base_url = "https://api.open-meteo.com/v1/forecast"
-    query = "current=weather_code"
 
-    fetch_url = f"{base_url}?longitude={str(lon)}&latitude={str(lat)}&{query}"
+    requestParams = {"longitude":lon, "latitude":lat, "current": "weather_code"}
 
-    print(fetch_url)
-
-    response = requests.get(fetch_url).json()
-    print(type(response))
+    response = requests.get(base_url, requestParams).json()
+    print(response)
 
     if "current" not in response:
         return "ERROR: bad query"
     
-    return f"Weather Code: {str(response["current"]["weather_code"])}"
+    return f"Weather Code: {response["current"]["weather_code"]}"
 
 if __name__ == '__main__':
     app.run(debug=True)
