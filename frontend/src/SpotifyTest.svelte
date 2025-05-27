@@ -1,15 +1,19 @@
 <script lang="ts">
-    const clientId = ""; // get from spotify Dev portal
+    const clientId = "0553802b6f0b4a3f8357fabcbecc3817"; // get from spotify Dev portal
+    // ^ TODO Put this in env file later
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code"); // if undef then user isn't authorized
 
-    if (!code) {
-        redirectToSpotify(clientId);
-    } else {
-        const accessToken = await getAccessToken(clientId, code);
-        const spotifyData = await getSpotifyData(accessToken);
-        console.log(spotifyData);
-    }
+    window.onload = async () => {
+        console.log("spotify test loaded");
+        if (!code) {
+            redirectToSpotify(clientId);
+        } else {
+            const accessToken = await getAccessToken(clientId, code);
+            const spotifyData = await getSpotifyData(accessToken);
+            console.log(spotifyData);
+        }
+    };
 
     // vv API Code taken from devloper.spotify.com vv
     async function redirectToSpotify(clientId: string) {

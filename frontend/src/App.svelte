@@ -1,5 +1,11 @@
-<script>
-    let test = "";
+<script lang="ts">
+    // testing spotify api
+    import SpotifyTest from "./SpotifyTest.svelte";
+    import { onMount } from "svelte";
+
+    onMount(async () => {
+        console.log("app mounted");
+    });
 </script>
 
 <head>
@@ -8,5 +14,6 @@
     <title>Forecast FM</title>
 </head>
 <body>
+    <SpotifyTest />
     <p>Testing app.svelte</p>
 </body>
