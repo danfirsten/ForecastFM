@@ -12,6 +12,8 @@
             const accessToken = await getAccessToken(clientId, code);
             const spotifyData = await getSpotifyData(accessToken);
             console.log(spotifyData);
+            // TODO - add code to extract specific data from spotify
+            // and add queries to get playlist
         }
     };
 
