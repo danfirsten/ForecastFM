@@ -1,0 +1,35 @@
+<script>
+  import './LandingPage.css';
+  // No script needed for static landing page
+</script>
+
+<div class="landing-outer">
+  <div class="landing-container">
+    <div class="title">ForecastFM</div>
+    <div class="subtitle">Music that matches your mood. Powered by the weather.</div>
+    <button class="cta-btn">Get My Forecast</button>
+  </div>
+  <div class="how-section">
+    <div class="how-title">How it Works</div>
+    <div class="steps">
+      <div class="step">
+        <div class="circle">
+          <div class="circle-number">1</div>
+          <div class="circle-desc">Connect your Spotify</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="circle">
+          <div class="circle-number">2</div>
+          <div class="circle-desc">Enter your Location</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="circle">
+          <div class="circle-number">3</div>
+          <div class="circle-desc">Enjoy your playlist</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

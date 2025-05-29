@@ -35,7 +35,7 @@ def getWeatherCode(lon, lat):
     if "current" not in response:
         return "ERROR: bad query"
     
-    return f"Weather Code: {response["current"]["weather_code"]}"
+    return f"Weather Code: {response['current']['weather_code']}"
 
 if __name__ == '__main__':
     app.run(debug=True)
