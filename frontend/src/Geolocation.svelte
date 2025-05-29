@@ -1,13 +1,18 @@
 <script lang="ts">
+    let status: HTMLParagraphElement | null = null;
+    let mapLink: HTMLAnchorElement | null = null;
+    
     function geoFindMe() {
         console.log("Pressed");
-        const status = document.querySelector("#status");
-        const mapLink = document.querySelector("#map-link");
-
+        
+        if (!status || !mapLink) return;
+        
         mapLink.href = "";
         mapLink.textContent = "";
 
-        function success(position) {
+        function success(position: GeolocationPosition) {
+            if (!status || !mapLink) return;
+            
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
 
@@ -17,6 +22,8 @@
         }
 
         function error() {
+            if (!status || !mapLink) return;
+
             status.textContent = "Unable to retrieve your location";
         }
 
@@ -29,8 +36,7 @@
 }
 </script>
 
-<body>
-    <button id="findme" on:click={geoFindMe}>Show my location</button><br />
-    <p id="status"></p>
-    <a id="map-link" target="_blank"></a>
-</body>
+<h3>Geolocation</h3>
+<button id="findme" on:click={geoFindMe}>Show my location</button><br />
+<p bind:this={status}></p>
+<a bind:this={mapLink} target="_blank"></a>
