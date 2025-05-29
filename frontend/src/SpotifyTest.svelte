@@ -10,6 +10,7 @@
             redirectToSpotify(clientId);
         } else {
             const accessToken = await getAccessToken(clientId, code);
+            console.log(accessToken);
             const spotifyData = await getSpotifyData(accessToken);
             console.log(spotifyData);
             // TODO - add code to extract specific data from spotify
@@ -84,10 +85,13 @@
     }
 
     async function getSpotifyData(accessToken: string) {
-        const result = await fetch("https://api.spotify.com/v1/me", {
-            method: "GET",
-            headers: { Authorization: `Bearer ${accessToken}` },
-        });
+        const result = await fetch(
+            "https://api.spotify.com/v1/search?q=Sunny&type=playlist&limit=15&include_external=audio",
+            {
+                method: "GET",
+                headers: { Authorization: `Bearer ${accessToken}` },
+            },
+        );
 
         return result.json();
     }
