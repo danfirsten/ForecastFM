@@ -23,7 +23,7 @@
         const challenge = await generateCodeChallenge(verifier);
 
         localStorage.setItem("verifier", verifier);
-        console.log("redirectTest");
+        //console.log("redirectTest");
         const params = new URLSearchParams();
         params.append("client_id", clientId);
         params.append("response_type", "code");
@@ -64,7 +64,7 @@
     async function getAccessToken(clientId: string, code: string) {
         const verifier = localStorage.getItem("verifier");
 
-        console.log("debug access token");
+        //console.log("debug access token");
 
         const params = new URLSearchParams();
         params.append("client_id", clientId);
@@ -83,7 +83,14 @@
         return access_token;
     }
 
-    async function getSpotifyData(accessToken: string) {}
+    async function getSpotifyData(accessToken: string) {
+        const result = await fetch("https://api.spotify.com/v1/me", {
+            method: "GET",
+            headers: { Authorization: `Bearer ${accessToken}` },
+        });
+
+        return result.json();
+    }
 </script>
 
 <head>
