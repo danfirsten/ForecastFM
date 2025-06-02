@@ -6,7 +6,8 @@
     // onMount(async () => {
     //     console.log("app mounted");
     // });
-    import LandingPage from './LandingPage.svelte';
+    // import LandingPage from './LandingPage.svelte';
+    import LocationPage from './LocationPage.svelte';
 </script>
 
 <!--
@@ -21,4 +22,5 @@
 </body>
 -->
 
-<LandingPage />
+<!-- <LandingPage /> -->
+<LocationPage />
