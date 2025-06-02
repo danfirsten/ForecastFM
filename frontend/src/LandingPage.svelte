@@ -1,5 +1,6 @@
 <script>
   import './LandingPage.css';
+  import './SpotifyTest.svelte';
   // No script needed for static landing page
 </script>
 
@@ -7,7 +8,7 @@
   <div class="landing-container">
     <div class="title">ForecastFM</div>
     <div class="subtitle">Music that matches your mood. Powered by the weather.</div>
-    <button class="cta-btn">Get My Forecast</button>
+    <button id="forecast-button"class="cta-btn">Get My Forecast</button>
   </div>
   <div class="how-section">
     <div class="how-title">How it Works</div>

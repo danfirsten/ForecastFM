@@ -15,8 +15,12 @@
             // TODO - add code to extract specific data from spotify
             // and add queries to get playlist
         }
+        document.getElementById("forecast-button")?.addEventListener("click", logIn)
     };
 
+    async function logIn() {
+        window.location.href = "http://127.0.0.1:5173/login"
+    }
     // vv API Code taken from devloper.spotify.com vv
     async function redirectToSpotify(clientId: string) {
         const verifier = generateCodeVerifier(128);
