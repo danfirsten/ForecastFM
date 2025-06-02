@@ -4,6 +4,8 @@
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code"); // if undef then user isn't authorized
 
+    const playlist_ids = {"sunny": "1xaUPRpVCbNaAzgsKrHHMp", "rainy": "47S4MBG0EEXwA0GdJUA4Ur", "night": }
+
     window.onload = async () => {
         console.log("spotify test loaded");
         if (!code) {
