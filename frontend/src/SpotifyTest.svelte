@@ -25,6 +25,7 @@
             const spotifyData = await getSpotifyData(accessToken);
             console.log(spotifyData);
             tracks = await getTracksFromPlaylist(spotifyData);
+            console.log(tracks);
             // TODO - add code to extract specific data from spotify
             // and add queries to get playlist
         }
@@ -123,11 +124,16 @@
     }
 
     async function getTracksFromPlaylist(playlistData: any) {
+        let trackIds: Array<stringt> = [];
         let trackInfo = playlistData.tracks.items;
         // itr
-        for (let track in trackInfo) {
-            console.log(track.track.id);
-        }
+        //console.log(trackInfo);
+        Object.entries(trackInfo).forEach((entry: Array<any>) => {
+            //console.log(entry[1].track.id);
+            trackIds.push(entry[1].track.id);
+        });
+
+        return trackIds;
     }
 </script>
 
