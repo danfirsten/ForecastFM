@@ -20,14 +20,19 @@
         if (!code) {
             redirectToSpotify(clientId);
         } else {
-            const accessToken = await getAccessToken(clientId, code);
-            console.log(accessToken);
-            const spotifyData = await getSpotifyData(accessToken);
-            console.log(spotifyData);
-            tracks = await getTracksFromPlaylist(spotifyData);
-            console.log(tracks);
-            // TODO - add code to extract specific data from spotify
-            // and add queries to get playlist
+            try {
+                const accessToken = await getAccessToken(clientId, code);
+                console.log(accessToken);
+                const spotifyData = await getSpotifyData(accessToken);
+                console.log(spotifyData);
+                tracks = await getTracksFromPlaylist(spotifyData);
+                console.log(tracks);
+                // TODO - add code to extract specific data from spotify
+                // and add queries to get playlist
+            } catch {
+                console.log("error");
+                redirectToSpotify(clientId);
+            }
         }
     };
 
