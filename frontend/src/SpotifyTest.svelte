@@ -19,7 +19,7 @@
     };
 
     async function logIn() {
-        window.location.href = "http://127.0.0.1:5173/login"
+        await redirectToSpotify(clientId);
     }
     // vv API Code taken from devloper.spotify.com vv
     async function redirectToSpotify(clientId: string) {
