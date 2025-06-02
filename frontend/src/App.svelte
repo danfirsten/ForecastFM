@@ -1,13 +1,15 @@
 <script lang="ts">
     // testing spotify api
-    import SpotifyTest from "./SpotifyTest.svelte";
-    import { onMount } from "svelte";
+    // import SpotifyTest from "./SpotifyTest.svelte";
+    // import { onMount } from "svelte";
 
-    onMount(async () => {
-        console.log("app mounted");
-    });
+    // onMount(async () => {
+    //     console.log("app mounted");
+    // });
+    import LandingPage from './LandingPage.svelte';
 </script>
 
+<!--
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -17,3 +19,6 @@
     <SpotifyTest />
     <p>Testing app.svelte</p>
 </body>
+-->
+
+<LandingPage />

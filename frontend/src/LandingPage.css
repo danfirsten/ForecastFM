@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #DFF2FB;
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.landing-outer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.landing-container {
+  flex: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  background: #DFF2FB;
+  border-radius: 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #023047;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: #219ebc;
+  margin-bottom: 1.5rem;
+}
+
+.cta-btn {
+  background: #023047;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 1rem auto 0 auto;
+  transition: background 0.2s;
+}
+
+.cta-btn:hover {
+  background: #219ebc;
+}
+
+.how-section {
+  flex: 1;
+  background: #fff;
+  padding: 1rem 0;
+  border-radius: 0 0 8px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.how-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  padding-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #023047;
+  text-align: center;
+}
+
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 160px;
+}
+
+.circle {
+  background: #ffb703;
+  color: #023047;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  padding: 1rem 0.5rem;
+}
+
+.circle-number {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.circle-desc {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #023047;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.step-desc {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .steps {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  .landing-container {
+    padding: 1rem;
+  }
+
+  .circle {
+    width: 120px;
+    height: 120px;
+  }
+
+  .circle-number {
+    font-size: 2rem;
+  }
+
+  .circle-desc {
+    font-size: 0.95rem;
+  }
+}

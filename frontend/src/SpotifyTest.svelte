@@ -23,7 +23,7 @@
         const challenge = await generateCodeChallenge(verifier);
 
         localStorage.setItem("verifier", verifier);
-
+        console.log("redirectTest");
         const params = new URLSearchParams();
         params.append("client_id", clientId);
         params.append("response_type", "code");
@@ -63,6 +63,8 @@
 
     async function getAccessToken(clientId: string, code: string) {
         const verifier = localStorage.getItem("verifier");
+
+        console.log("debug access token");
 
         const params = new URLSearchParams();
         params.append("client_id", clientId);
