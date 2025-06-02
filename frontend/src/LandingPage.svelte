@@ -1,14 +1,20 @@
 <script>
+  import { onMount } from "svelte";
   import './LandingPage.css';
+  import { logIn } from './SpotifyTest.svelte';
   import './SpotifyTest.svelte';
   // No script needed for static landing page
+
+   window.onload = (async () => {
+        document.getElementById("forecast-button")?.addEventListener("click", logIn)
+    });   
 </script>
 
 <div class="landing-outer">
   <div class="landing-container">
     <div class="title">ForecastFM</div>
     <div class="subtitle">Music that matches your mood. Powered by the weather.</div>
-    <button id="forecast-button"class="cta-btn">Get My Forecast</button>
+    <button id="forecast-button" class="cta-btn">Get My Forecast</button>
   </div>
   <div class="how-section">
     <div class="how-title">How it Works</div>
