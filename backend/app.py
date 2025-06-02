@@ -11,18 +11,6 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
 
-CLIENT_ID = '0553802b6f0b4a3f8357fabcbecc3817'
-REDIRECT_URI = 'http://127.0.0.1:5173/callback'
-SCOPES = 'user-read-private user-read-email'
-
-def generate_code_verifier():
-    return base64.urlsafe_b64encode(secrets.token_bytes(32)).rstrip(b'=').decode('utf-8')
-
-
-def generate_code_challenge(verifier):
-    digest = hashlib.sha256(verifier.encode()).digest()
-    return base64.urlsafe_b64encode(digest).rstrip(b'=').decode('utf-8')
-
 @app.route('/weather/<int:lat>/<int:lon>',methods=['GET'])
 def getWeatherCode(lon, lat):
     ''' 
@@ -54,25 +42,5 @@ def getWeatherCode(lon, lat):
         return "ERROR: bad query"
     
     return f"Weather Code: {response['current']['weather_code']}"
-
-app.route('/login')
-def login():
-    verifier = generate_code_verifier()
-    challenge = generate_code_challenge(verifier)
-
-    session['verifier'] = verifier  # Store in session
-
-    query_params = {
-        "client_id": CLIENT_ID,
-        "response_type": "code",
-        "redirect_uri": REDIRECT_URI,
-        "scope": SCOPES,
-        "code_challenge_method": "S256",
-        "code_challenge": challenge
-    }
-
-    auth_url = f"https://accounts.spotify.com/authorize?{urlencode(query_params)}"
-    return redirect(auth_url)
-
 if __name__ == '__main__':
     app.run(debug=True)
