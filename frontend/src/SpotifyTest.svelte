@@ -85,13 +85,33 @@
     }
 
     async function getSpotifyData(accessToken: string) {
-        const result = await fetch(
-            "https://api.spotify.com/v1/search?q=Sunny&type=playlist&limit=15&include_external=audio",
-            {
-                method: "GET",
-                headers: { Authorization: `Bearer ${accessToken}` },
-            },
-        );
+        /*
+            Ideas for retrieving relevant songs:
+            - put weather into query and find a playlist
+            - put weather into query and find 10-15 songs and create our own playlist 
+            on the site
+            - manually map certain weather patterns to specific playlists and pull 
+            10-15 random songs from that playlist when the weather matches
+
+
+            search queries:
+            - sunny mix
+            - rainy day mix
+            - 
+        */
+        // const url =
+        //     "https://api.spotify.com/v1/search?q=jazz&type=playlist&limit=15&offset=0";
+        // const url =
+        //     "https://api.spotify.com/v1/playlists/37i9dQZF1EIhkGftn1D0Mh";
+        //const url =
+        //"https://api.spotify.com/v1/recommendations?seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry&seed_tracks=0c6xIDDpzE81m2q797ordA");
+        const url =
+            "https://api.spotify.com/v1/browse/categories/dinner/playlists";
+
+        const result = await fetch(url, {
+            method: "GET",
+            headers: { Authorization: `Bearer ${accessToken}` },
+        });
 
         return result.json();
     }
