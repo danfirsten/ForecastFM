@@ -4,10 +4,19 @@
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code"); // if undef then user isn't authorized
 
-    const playlist_ids = {"sunny": "1xaUPRpVCbNaAzgsKrHHMp", "rainy": "47S4MBG0EEXwA0GdJUA4Ur", "night": }
+    let weather = ""; // get weather from weather api
+    let tracks = [];
+
+    let playlist_ids = new Map([
+        ["sunny", "1xaUPRpVCbNaAzgsKrHHMp"],
+        ["rainy", "47S4MBG0EEXwA0GdJUA4Ur"],
+        ["night", "5elnsQozvPDX2m0WEOV1z4"],
+        ["cloudy", "7dt4XvrQt8U8BQFQBKFV6u"],
+    ]); // hardcoded playlists, put in env file?
 
     window.onload = async () => {
         console.log("spotify test loaded");
+        await fetchWeather();
         if (!code) {
             redirectToSpotify(clientId);
         } else {
@@ -15,10 +24,16 @@
             console.log(accessToken);
             const spotifyData = await getSpotifyData(accessToken);
             console.log(spotifyData);
+            tracks = await getTracksFromPlaylist(spotifyData);
             // TODO - add code to extract specific data from spotify
             // and add queries to get playlist
         }
     };
+
+    async function fetchWeather() {
+        // fetch weather from backend
+        weather = "sunny";
+    }
 
     // vv API Code taken from devloper.spotify.com vv
     async function redirectToSpotify(clientId: string) {
@@ -62,8 +77,6 @@
             .replace(/=+$/, "");
     }
 
-    // ^^ Code taken from spotify ^^
-
     async function getAccessToken(clientId: string, code: string) {
         const verifier = localStorage.getItem("verifier");
 
@@ -86,6 +99,8 @@
         return access_token;
     }
 
+    // ^^ Code taken from spotify ^^
+
     async function getSpotifyData(accessToken: string) {
         /*
             Ideas for retrieving relevant songs:
@@ -94,21 +109,10 @@
             on the site
             - manually map certain weather patterns to specific playlists and pull 
             10-15 random songs from that playlist when the weather matches
-
-
-            search queries:
-            - sunny mix
-            - rainy day mix
-            - 
         */
-        // const url =
-        //     "https://api.spotify.com/v1/search?q=jazz&type=playlist&limit=15&offset=0";
-        // const url =
-        //     "https://api.spotify.com/v1/playlists/37i9dQZF1EIhkGftn1D0Mh";
-        //const url =
-        //"https://api.spotify.com/v1/recommendations?seed_artists=4NHQUGzhtTLFvgF5SZesLK&seed_genres=classical%2Ccountry&seed_tracks=0c6xIDDpzE81m2q797ordA");
-        const url =
-            "https://api.spotify.com/v1/browse/categories/dinner/playlists";
+
+        let playlist_id = playlist_ids.get(weather);
+        const url = "https://api.spotify.com/v1/playlists/" + playlist_id;
 
         const result = await fetch(url, {
             method: "GET",
@@ -116,6 +120,14 @@
         });
 
         return result.json();
+    }
+
+    async function getTracksFromPlaylist(playlistData: any) {
+        let trackInfo = playlistData.tracks.items;
+        // itr
+        for (let track in trackInfo) {
+            console.log(track.track.id);
+        }
     }
 </script>
 
