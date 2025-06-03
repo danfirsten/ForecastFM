@@ -26,6 +26,7 @@
                 const spotifyData = await getSpotifyData(accessToken);
                 console.log(spotifyData);
                 tracks = await getTracksFromPlaylist(spotifyData);
+                localStorage.setItem("trackIds", JSON.stringify(tracks));
                 console.log(tracks);
                 // TODO - add code to extract specific data from spotify
                 // and add queries to get playlist
@@ -38,6 +39,8 @@
 
     async function fetchWeather() {
         // fetch weather from backend
+        // need location
+
         weather = "sunny";
     }
 

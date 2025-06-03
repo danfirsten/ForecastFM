@@ -5,6 +5,10 @@
 
     onMount(async () => {
         console.log("app mounted");
+
+        let trackIds = localStorage.getItem("trackIds");
+        const ids = trackIds ? JSON.parse(trackIds) : []; // parse, if possible
+        console.log("my track ids: ", ids);
     });
 </script>
 
@@ -15,7 +19,7 @@
 </head>
 <body>
     <SpotifyTest />
-    <p>Testing app.svelte</p>
+    <p>testing svelte</p>
 
     <iframe
         title="paint it black"
