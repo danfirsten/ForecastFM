@@ -6,9 +6,9 @@
     onMount(async () => {
         console.log("app mounted");
 
-        let trackIds = localStorage.getItem("trackIds");
-        const ids = trackIds ? JSON.parse(trackIds) : []; // parse, if possible
-        console.log("my track ids: ", ids);
+        let _trackIds = localStorage.getItem("trackIds");
+        const trackIds = _trackIds ? JSON.parse(_trackIds) : [];
+        console.log("my track ids: ", trackIds);
     });
 </script>
 
