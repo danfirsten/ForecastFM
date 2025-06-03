@@ -11,7 +11,7 @@
   </nav>
   <div class="location-center-content">
     <div class="logo-hero-container">
-      <img src="../img/ForecastFM_fav.png" alt="ForecastFM Logo" class="logo-hero" />
+      <img src="../img/ForecastFM_logo_transparent.png" alt="ForecastFM Logo" class="logo-hero" />
     </div>
     <h2 class="location-heading">Check the weather and get your playlist</h2>
     <div class="location-card">
