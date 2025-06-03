@@ -7,6 +7,7 @@
     //     console.log("app mounted");
     // });
     import LandingPage from './LandingPage.svelte';
+    
 </script>
 
 <!--

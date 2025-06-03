@@ -55,24 +55,5 @@ def getWeatherCode(lon, lat):
     
     return f"Weather Code: {response['current']['weather_code']}"
 
-app.route('/login')
-def login():
-    verifier = generate_code_verifier()
-    challenge = generate_code_challenge(verifier)
-
-    session['verifier'] = verifier  # Store in session
-
-    query_params = {
-        "client_id": CLIENT_ID,
-        "response_type": "code",
-        "redirect_uri": REDIRECT_URI,
-        "scope": SCOPES,
-        "code_challenge_method": "S256",
-        "code_challenge": challenge
-    }
-
-    auth_url = f"https://accounts.spotify.com/authorize?{urlencode(query_params)}"
-    return redirect(auth_url)
-
 if __name__ == '__main__':
     app.run(debug=True)
