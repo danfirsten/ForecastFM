@@ -1,17 +1,17 @@
 <script lang="ts">
     // testing spotify api
-    import SpotifyTest from "./SpotifyTest.svelte";
-    import { onMount } from "svelte";
+    // import SpotifyTest from "./SpotifyTest.svelte";
+    // import { onMount } from "svelte";
 
-    onMount(async () => {
-        console.log("app mounted");
-
-        let _trackIds = localStorage.getItem("trackIds");
-        const trackIds = _trackIds ? JSON.parse(_trackIds) : [];
-        //console.log("my track ids: ", trackIds);
-    });
+    // onMount(async () => {
+    //     console.log("app mounted");
+    //     let _trackIds = localStorage.getItem("trackIds");
+    //     const trackIds = _trackIds ? JSON.parse(_trackIds) : [];
+    // });
+    import LandingPage from './LandingPage.svelte';
 </script>
 
+<!--
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -41,3 +41,6 @@
         loading="lazy"
     ></iframe>
 </body>
+-->
+
+<LandingPage />
