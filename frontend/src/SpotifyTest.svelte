@@ -4,18 +4,45 @@
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code"); // if undef then user isn't authorized
 
+    let weather = ""; // get weather from weather api
+    let tracks = [];
+
+    let playlist_ids = new Map([
+        ["sunny", "1xaUPRpVCbNaAzgsKrHHMp"],
+        ["rainy", "47S4MBG0EEXwA0GdJUA4Ur"],
+        ["night", "5elnsQozvPDX2m0WEOV1z4"],
+        ["cloudy", "7dt4XvrQt8U8BQFQBKFV6u"],
+    ]); // hardcoded playlists, put in env file?
+
     window.onload = async () => {
-        console.log("spotify test loaded");
+        //console.log("spotify test loaded");
+        await fetchWeather();
         if (!code) {
             redirectToSpotify(clientId);
         } else {
-            const accessToken = await getAccessToken(clientId, code);
-            const spotifyData = await getSpotifyData(accessToken);
-            console.log(spotifyData);
-            // TODO - add code to extract specific data from spotify
-            // and add queries to get playlist
+            try {
+                const accessToken = await getAccessToken(clientId, code);
+                //console.log(accessToken);
+                const spotifyData = await getSpotifyData(accessToken);
+                //console.log(spotifyData);
+                tracks = await getTracksFromPlaylist(spotifyData);
+                localStorage.setItem("trackIds", JSON.stringify(tracks));
+                //console.log(tracks);
+                // TODO - add code to extract specific data from spotify
+                // and add queries to get playlist
+            } catch (error) {
+                console.log("error: ", error);
+                redirectToSpotify(clientId);
+            }
         }
     };
+
+    async function fetchWeather() {
+        // fetch weather from backend
+        // need location
+
+        weather = "sunny";
+    }
 
     // vv API Code taken from devloper.spotify.com vv
     async function redirectToSpotify(clientId: string) {
@@ -23,7 +50,7 @@
         const challenge = await generateCodeChallenge(verifier);
 
         localStorage.setItem("verifier", verifier);
-        console.log("redirectTest");
+        //console.log("redirectTest");
         const params = new URLSearchParams();
         params.append("client_id", clientId);
         params.append("response_type", "code");
@@ -59,12 +86,10 @@
             .replace(/=+$/, "");
     }
 
-    // ^^ Code taken from spotify ^^
-
     async function getAccessToken(clientId: string, code: string) {
         const verifier = localStorage.getItem("verifier");
 
-        console.log("debug access token");
+        //console.log("debug access token");
 
         const params = new URLSearchParams();
         params.append("client_id", clientId);
@@ -83,7 +108,41 @@
         return access_token;
     }
 
-    async function getSpotifyData(accessToken: string) {}
+    // ^^ Code taken from spotify ^^
+
+    async function getSpotifyData(accessToken: string) {
+        /*
+            Ideas for retrieving relevant songs:
+            - put weather into query and find a playlist
+            - put weather into query and find 10-15 songs and create our own playlist 
+            on the site
+            - manually map certain weather patterns to specific playlists and pull 
+            10-15 random songs from that playlist when the weather matches
+        */
+
+        let playlist_id = playlist_ids.get(weather);
+        const url = "https://api.spotify.com/v1/playlists/" + playlist_id;
+
+        const result = await fetch(url, {
+            method: "GET",
+            headers: { Authorization: `Bearer ${accessToken}` },
+        });
+
+        return result.json();
+    }
+
+    async function getTracksFromPlaylist(playlistData: any) {
+        let trackIds: Array<stringt> = [];
+        let trackInfo = playlistData.tracks.items;
+        // itr
+        //console.log(trackInfo);
+        Object.entries(trackInfo).forEach((entry: Array<any>) => {
+            //console.log(entry[1].track.id);
+            trackIds.push(entry[1].track.id);
+        });
+
+        return trackIds;
+    }
 </script>
 
 <head>
