@@ -15,23 +15,23 @@
     ]); // hardcoded playlists, put in env file?
 
     window.onload = async () => {
-        console.log("spotify test loaded");
+        //console.log("spotify test loaded");
         await fetchWeather();
         if (!code) {
             redirectToSpotify(clientId);
         } else {
             try {
                 const accessToken = await getAccessToken(clientId, code);
-                console.log(accessToken);
+                //console.log(accessToken);
                 const spotifyData = await getSpotifyData(accessToken);
-                console.log(spotifyData);
+                //console.log(spotifyData);
                 tracks = await getTracksFromPlaylist(spotifyData);
                 localStorage.setItem("trackIds", JSON.stringify(tracks));
-                console.log(tracks);
+                //console.log(tracks);
                 // TODO - add code to extract specific data from spotify
                 // and add queries to get playlist
-            } catch {
-                console.log("error");
+            } catch (error) {
+                console.log("error: ", error);
                 redirectToSpotify(clientId);
             }
         }

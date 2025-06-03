@@ -8,7 +8,7 @@
 
         let _trackIds = localStorage.getItem("trackIds");
         const trackIds = _trackIds ? JSON.parse(_trackIds) : [];
-        console.log("my track ids: ", trackIds);
+        //console.log("my track ids: ", trackIds);
     });
 </script>
 
