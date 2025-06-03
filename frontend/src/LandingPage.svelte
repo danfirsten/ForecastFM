@@ -1,7 +1,13 @@
 <script>
+  import { onMount } from "svelte";
   import './LandingPage.css';
+  import { logIn } from './SpotifyTest.svelte';
   import './SpotifyTest.svelte';
   // No script needed for static landing page
+
+   window.onload = (async () => {
+        document.getElementById("forecast-button")?.addEventListener("click", logIn)
+    });   
 </script>
 
 <div class="landing-outer">

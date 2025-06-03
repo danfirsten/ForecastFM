@@ -1,10 +1,11 @@
-<script lang="ts">
+<script lang="ts" context="module">
     const clientId = "0553802b6f0b4a3f8357fabcbecc3817"; // get from spotify Dev portal
     // ^ TODO Put this in env file later
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code"); // if undef then user isn't authorized
+ 
 
-    window.onload = async () => {
+    export async function logIn() {
         console.log("spotify test loaded");
         if (!code) {
             redirectToSpotify(clientId);
@@ -15,12 +16,8 @@
             // TODO - add code to extract specific data from spotify
             // and add queries to get playlist
         }
-        document.getElementById("forecast-button")?.addEventListener("click", logIn)
-    };
-
-    async function logIn() {
-        await redirectToSpotify(clientId);
     }
+
     // vv API Code taken from devloper.spotify.com vv
     async function redirectToSpotify(clientId: string) {
         const verifier = generateCodeVerifier(128);
