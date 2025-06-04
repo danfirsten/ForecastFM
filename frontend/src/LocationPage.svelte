@@ -23,14 +23,22 @@
 
             let data = resp_json["current"];
 
-            localStorage.setItem("weatherCode",data["current"]);
-            localStorage.setItem("temperature",data["temperature"]+"°F");
+            console.log(data);
 
-            status.textContent = data["current"] + " " + data["temperature"] + "°F";
+            let weatherCode = data["weather_code"];
+            let temperature = data["temperature"];
 
-            // weatherCode.textContent = `Code: ${data["weather_code"]}`;
-            // temperature.textContent = `${data["temperature"]}°F`;
-            // temperature.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+            localStorage.setItem("weatherCode",weatherCode);
+            localStorage.setItem("temperature",temperature);
+
+            // // get city name from coordinates
+            // const city_url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
+            // resp = await fetch(city_url);
+            // data = await resp.json();
+
+
+
+            status.textContent = data["weather_code"] + " " + data["temperature"] + "°F";
         }
 
         function error() {
@@ -44,6 +52,7 @@
             status.style.color = "red";
             status.textContent = "Geolocation is not supported by your browser";
         } else {
+            status.style.color = "black";
             status.textContent = "Locating…";
             navigator.geolocation.getCurrentPosition(success, error);
         }
