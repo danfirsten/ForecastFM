@@ -8,6 +8,7 @@
     // });
     // import LandingPage from './LandingPage.svelte';
     import LocationPage from './LocationPage.svelte';
+  import Playlist from './Playlist.svelte';
 </script>
 
 <!--
@@ -23,4 +24,5 @@
 -->
 
 <!-- <LandingPage /> -->
-<LocationPage />
+<!-- <LocationPage /> -->
+<Playlist /> 

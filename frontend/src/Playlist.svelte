@@ -82,6 +82,10 @@
         localStorage.removeItem('spotify_access_token');
         // TODO - add routing
     }
+
+    let location = 'Davis, California';
+    let temperature = '88\u00B0F Sunny';
+
 </script>
 
 <div>
@@ -100,8 +104,10 @@
             <img src="/assets/Sunny.png" alt="Sunny" />
         </div>
         <div class="weather-text">
-            <div class="location">Davis, California</div>
-            <div class="temperature">88&deg; Sunny</div>
+            <!-- <div class="location">Davis, California</div>
+            <div class="temperature">88&deg; Sunny</div> -->
+            <div class="location">{location}</div>
+            <div class="temperature">{temperature}</div>
         </div>
     </div>
 
