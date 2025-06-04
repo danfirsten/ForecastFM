@@ -14,7 +14,7 @@
   <nav class="location-navbar">
     <div class="navbar-container">
       <span class="location-title">ForecastFM</span>
-      <button id="logout-btn" on:click={handleLogout} class="logout-btn">Logout</button>
+      <button id="logout-btn" on:click={logOut} class="logout-btn">Logout</button>
     </div>
   </nav>
   <div class="location-center-content">
