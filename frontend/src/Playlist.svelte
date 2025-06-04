@@ -94,7 +94,9 @@
     }
 
     let location = 'Davis, California';
-    let temperature = '88\u00B0F Sunny';
+    // let temperature = '88\u00B0F Sunny';
+    let temp = localStorage.getItem("temperature"); 
+    let temperature = temp + '\u00B0F ' + weatherIcon;
 
 </script>
 
