@@ -1,19 +1,37 @@
 <script>
   import { onMount } from "svelte";
-  import './LandingPage.css';
-  import { logIn } from './SpotifyTest.svelte';
-  import './SpotifyTest.svelte';
+  import "./LandingPage.css";
+  import { logIn } from "./SpotifyTest.svelte";
+  import "./SpotifyTest.svelte";
+  import { push } from "svelte-spa-router";
   // No script needed for static landing page
 
-   window.onload = (async () => {
-        document.getElementById("forecast-button")?.addEventListener("click", logIn)
-    });   
+  window.onload = async () => {
+    document
+      .getElementById("forecast-button")
+      ?.addEventListener("click", logIn);
+
+    goToLocation();
+  };
+
+  function goToLocation() {
+    console.log("check if logged in");
+    const params = new URLSearchParams(window.location.search);
+    let userCode = params.get("code");
+    //console.log("user code: ", userCode);
+    if (userCode) {
+      // logged in
+      push("/location");
+    }
+  }
 </script>
 
 <div class="landing-outer">
   <div class="landing-container">
     <div class="title">ForecastFM</div>
-    <div class="subtitle">Music that matches your mood. Powered by the weather.</div>
+    <div class="subtitle">
+      Music that matches your mood. Powered by the weather.
+    </div>
     <button id="forecast-button" class="cta-btn">Get My Forecast</button>
   </div>
   <div class="how-section">
@@ -39,4 +57,4 @@
       </div>
     </div>
   </div>
-</div> 
+</div>

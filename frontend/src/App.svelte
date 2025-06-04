@@ -8,9 +8,13 @@
     //     let _trackIds = localStorage.getItem("trackIds");
     //     const trackIds = _trackIds ? JSON.parse(_trackIds) : [];
     // });
-    // import LandingPage from './LandingPage.svelte';
+    import LandingPage from './LandingPage.svelte';
     import LocationPage from './LocationPage.svelte';
-  import Playlist from './Playlist.svelte';
+
+    import Router from 'svelte-spa-router';
+    import routes from './routes';
+    import Playlist from './Playlist.svelte';
+
 </script>
 
 <!--
@@ -45,6 +49,6 @@
 </body>
 -->
 
-<!-- <LandingPage /> -->
-<!-- <LocationPage /> -->
-<Playlist /> 
+<Router {routes} />
+<LandingPage />
+<LocationPage />
