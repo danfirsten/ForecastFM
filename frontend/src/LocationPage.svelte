@@ -4,37 +4,28 @@
   import { logOut } from './SpotifyTest.svelte';
   // import { handleLogout } from './Playlist.svelte';
   import { onMount } from 'svelte';
+  import { push } from 'svelte-spa-router';
 
   // onMount(async () => {
   //   console.log("location page loads");
   //   document.getElementById("logout-btn")?.addEventListener("click", logOut);
   // }); 
 
-
   let status: HTMLParagraphElement | null = null;
 
   function geoFindMe() {
-        console.log("Pressed");
-        
-        if (!status) return;
-        
-        // temperature.textContent = "";
+      console.log("Pressed");
+          
+      async function success(position: GeolocationPosition) {        
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
 
-        async function success(position: GeolocationPosition) {
-            if (!status) return;
-            
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-
+          // Get weather data: 
+          try {
             let api_url = `http://127.0.0.1:5000/weather/${latitude}/${longitude}`;
-            console.log(api_url);
             let resp = await fetch(api_url);
             let resp_json = await resp.json();
-
             let data = resp_json["current"];
-
-            console.log(data);
-
             let weatherCode = data["weather_code"];
             let temperature = data["temperature"];
 
@@ -47,41 +38,104 @@
               if ([71, 73, 75, 77, 85, 86].includes(code)) return "Snowy";
               if ([95, 96, 99].includes(code)) return "Stormy";
               return "Unknown"; 
-          }
+            }
 
             let weather = getWeatherIcon(weatherCode);
 
+            console.log("Weather:", weather, temperature + "°F");
 
-            localStorage.setItem("weather",weather);
-            localStorage.setItem("temperature",temperature);
+            // Get location data:
+            try {
+              const geocode_url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&addressdetails=1`;
+              const geocode_resp = await fetch(geocode_url);
+              const geocode_data = await geocode_resp.json();
+              const address = geocode_data.address;
 
-            // // get city name from coordinates
-            // const city_url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
-            // resp = await fetch(city_url);
-            // data = await resp.json();
+              // Try multiple city field possibilities in order of preference
+              let city = address.city || 
+                        address.town || 
+                        address.village || 
+                        address.municipality || 
+                        address.hamlet || 
+                        address.suburb ||
+                        address.neighbourhood ||
+                        address.county ||
+                        "Unknown City";
+              
+              let state = address.state || 
+                          address.province || 
+                          address.region || 
+                          "Unknown State";
 
+              console.log("location:", city, state);
 
+              // Store everything
+              localStorage.setItem("weather", weather);
+              localStorage.setItem("temperature", temperature.toString());
+              localStorage.setItem("city", city);
+              localStorage.setItem("state", state);
 
-            status.textContent = data["weather_code"] + " " + data["temperature"] + "°F";
-        }
+              // Update status display
+              const statusElement = document.querySelector('.location-card p');
+              if (statusElement) {
+                statusElement.textContent = `${weather} ${temperature}°F in ${city}, ${state}`;
+              }
+              console.log("Completed- data stored");
 
-        function error() {
-            if (!status) return;
+              // Navigate to playlist page after successful data storage
+              push('/playlist');
 
-            status.style.color = "red";
-            status.textContent = "Unable to retrieve your location";
-        }
+            } catch(geocodeError) {
+              console.error("Geocoding failed:", geocodeError);
+              // Still store weather data
+              localStorage.setItem("weather", weather);
+              localStorage.setItem("temperature", temperature.toString());
+              localStorage.setItem("city", "Unknown City");
+              localStorage.setItem("state", "Unknown State");
+              const statusElement = document.querySelector('.location-card p');
+              if (statusElement) {
+                statusElement.textContent = `${weather} ${temperature}°F`;
+              }       
 
-        if (!navigator.geolocation) {
-            status.style.color = "red";
-            status.textContent = "Geolocation is not supported by your browser";
-        } else {
-            status.style.color = "black";
-            status.textContent = "Locating…";
-            navigator.geolocation.getCurrentPosition(success, error);
-        }
+              // Still navigate even if geocoding fails
+              push('/playlist');
+            }
+          } catch (weatherError) {
+            console.error("Weather API failed:", weatherError);
+            const statusElement = document.querySelector('.location-card p');
+            if (statusElement) {
+              statusElement.style.color = "red";
+              statusElement.textContent = "Failed to get weather data";
+            }
+          }
+      }
+
+      function error() {
+          console.log("Geolocation error");
+          const statusElement = document.querySelector('.location-card p');
+          if (statusElement) {
+            statusElement.style.color = "red";
+            statusElement.textContent = "Unable to retrieve your location";
+          }
+      }
+
+      if (!navigator.geolocation) {
+        console.log("Geolocation not supported");
+          const statusElement = document.querySelector('.location-card p');
+          if (statusElement) {
+            statusElement.style.color = "red";
+            statusElement.textContent = "Geolocation is not supported by your browser";
+          }
+      } else {
+          console.log("Starting geolocation");
+          const statusElement = document.querySelector('.location-card p');
+          if (statusElement) {
+            statusElement.style.color = "black";
+            statusElement.textContent = "Locating…";
+          }
+          navigator.geolocation.getCurrentPosition(success, error);
+      }
   }
-
 </script>
 
 <div class="location-bg">

@@ -4,7 +4,6 @@
   import { logIn } from "./SpotifyTest.svelte";
   import "./SpotifyTest.svelte";
   import { push } from "svelte-spa-router";
-  // No script needed for static landing page
 
   window.onload = async () => {
     document
@@ -18,8 +17,7 @@
     console.log("check if logged in");
     const params = new URLSearchParams(window.location.search);
     let userCode = params.get("code");
-    //console.log("user code: ", userCode);
-    if (userCode) {
+    if (userCode) { 
       // logged in
       push("/location");
     }

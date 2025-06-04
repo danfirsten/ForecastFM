@@ -2,12 +2,18 @@
     import './Playlist.css';
     import { onMount } from 'svelte';
     import { logOut } from './SpotifyTest.svelte';
+    import { push } from 'svelte-spa-router';
 
     let allTrackIds = [];
     let displayedTracks = [];
     let isLoading = true;
 
+    let location = 'loc';
+    let temperature = 'temp';
+    let weather = 'Sunny'; // Default fallback
+
     onMount(async () => {
+        loadWeatherData();
         loadTrackIds();
     });
 
@@ -74,17 +80,24 @@
         shuffleAndDisplayTracks();
     }
 
-    function handleChangeLocation() {
-        // TODO - add routing
+    function loadWeatherData() {
+        // Get weather data from localStorage
+        const storedWeather = localStorage.getItem("weather");
+        const storedTemperature = localStorage.getItem("temperature");
+        const storedCity = localStorage.getItem("city");
+        const storedState = localStorage.getItem("state");
+
+        // Update the variables
+        weather = storedWeather;
+        temperature = `${storedTemperature}°F ${storedWeather}`;
+        location = `${storedCity}, ${storedState}`;
+
+        console.log("Loaded weather data:", { weather, temperature, location });
     }
 
-
-    $: weather = localStorage.getItem("weather");
-
-    
-
-    let location = 'Davis, California';
-    let temperature = '88\u00B0F Sunny';
+    function handleChangeLocation() {
+        push('/location');
+    }
 </script>
 
 <div>
@@ -97,14 +110,10 @@
     <div class="message">Here's your curated playlist created for</div>
     
     <div class="weather">
-        <!-- info pulled from the weather API -->
-        <!-- replace placeholders with stuff from Weather API  -->
         <div class="logo">
             <img src={`/assets/${weather}.png`} alt={weather} />
         </div>
         <div class="weather-text">
-            <!-- <div class="location">Davis, California</div>
-            <div class="temperature">88&deg; Sunny</div> -->
             <div class="location">{location}</div>
             <div class="temperature">{temperature}</div>
         </div>
@@ -129,14 +138,15 @@
                     <iframe
                         title="Spotify Track {index + 1}"
                         style="border-radius:12px"
-                        src="https://open.spotify.com/embed/track/{trackId}?utm_source=generator&theme=0"
+                        src="https://open.spotify.com/embed/track/{trackId}?utm_source=generator"
                         width="100%"
-                        height="100"
+                        height="152"
                         frameBorder="0"
-                        loading="lazy"
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                     ></iframe>
                 </div>
             {/each}
         </div>
     {/if}
 </div>
+
