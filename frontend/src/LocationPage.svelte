@@ -1,6 +1,16 @@
 <script lang="ts">
   import './LocationPage.css';
 
+  import { logOut } from './SpotifyTest.svelte';
+  // import { handleLogout } from './Playlist.svelte';
+  import { onMount } from 'svelte';
+
+  // onMount(async () => {
+  //   console.log("location page loads");
+  //   document.getElementById("logout-btn")?.addEventListener("click", logOut);
+  // }); 
+
+
   let status: HTMLParagraphElement | null = null;
 
   function geoFindMe() {
@@ -57,13 +67,14 @@
             navigator.geolocation.getCurrentPosition(success, error);
         }
   }
+
 </script>
 
 <div class="location-bg">
   <nav class="location-navbar">
     <div class="navbar-container">
       <span class="location-title">ForecastFM</span>
-      <button class="logout-btn">Logout</button>
+      <button id="logout-btn" on:click={logOut} class="logout-btn">Logout</button>
     </div>
   </nav>
   <div class="location-center-content">
