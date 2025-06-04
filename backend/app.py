@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
 
-@app.route('/weather/<int:lat>/<int:lon>',methods=['GET'])
+@app.route('/weather/<string:lat>/<string:lon>',methods=['GET'])
 def getWeatherCode(lon, lat):
     ''' 
     Fetch weather code for given coords from open-meteo API
@@ -27,13 +27,23 @@ def getWeatherCode(lon, lat):
     Returns
     -------
     str 
-        String containing the weather code
+        JSON containing the weather code and temp of specified coordinates
 
     '''
 
+    # convert coords from strings to floats
+    try:
+        lon = float(lon)
+        lat = float(lat)
+    except:
+        return "ERROR: invalid coords"
+
+    # build url for query
     base_url = "https://api.open-meteo.com/v1/forecast"
 
-    requestParams = {"longitude":lon, "latitude":lat, "current": "weather_code"}
+    requestParams = {"longitude":lon, "latitude":lat, 
+                     "current": "temperature,weather_code",
+                     "temperature_unit": "fahrenheit"}
 
     response = requests.get(base_url, requestParams).json()
     print(response)
@@ -41,6 +51,6 @@ def getWeatherCode(lon, lat):
     if "current" not in response:
         return "ERROR: bad query"
     
-    return f"Weather Code: {response['current']['weather_code']}"
+    return response
 if __name__ == '__main__':
     app.run(debug=True)
