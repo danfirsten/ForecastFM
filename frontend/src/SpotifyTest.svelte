@@ -66,10 +66,8 @@
     }
 
     export async function logOut() {
-        console.log("log out through event handler");
         localStorage.clear();
-        // push('/');
-        // window.location.href = redirectUrl;
+        window.location.href = redirectUrl;
     }
 
     async function fetchWeather() {
