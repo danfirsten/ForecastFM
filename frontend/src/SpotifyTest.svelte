@@ -1,33 +1,43 @@
 <script lang="ts" context="module">
+    import { push } from "svelte-spa-router";
+    import "./LocationPage.svelte";
+    import { onMount } from "svelte";
     const clientId = "0553802b6f0b4a3f8357fabcbecc3817"; // get from spotify Dev portal
     // ^ TODO Put this in env file later
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code"); // if undef then user isn't authorized
-
+    const redirectUrl = "http://127.0.0.1:5173";
 
     const tokenEndpoint = "https://accounts.spotify.com/api/token";
-    const scope = 'user-read-private user-read-email';
- 
-    const currentToken = {
-        get access_token() { return localStorage.getItem('access_token'); },
-        get refresh_token() { return localStorage.getItem('refresh_token'); },
-        get expires_in() { return localStorage.getItem('refresh_in') },
-        get expires() { return localStorage.getItem('expires')},
+    const scope = "user-read-private user-read-email";
 
-        save: function (response) {
-            const { access_token, refresh_token, expires_in } = response;
-            localStorage.setItem('access_token', access_token);
-            localStorage.setItem('refresh_token', refresh_token);
-            localStorage.setItem('expires_in', expires_in);
+    // onMount(async () => {
+    //     console.log("check if logged in");
+    //     const params = new URLSearchParams(window.location.search);
+    //     let userCode = params.get("code");
+    //     console.log("user code: ", userCode);
+    //     if (userCode != "") {
+    //         // logged in
+    //         push("/location");
+    //     }
+    // });
+    // const currentToken = {
+    //     get access_token() { return localStorage.getItem('access_token'); },
+    //     get refresh_token() { return localStorage.getItem('refresh_token'); },
+    //     get expires_in() { return localStorage.getItem('refresh_in') },
+    //     get expires() { return localStorage.getItem('expires')},
 
-            const now = new Date();
-            const expiry = new Date(now.getTime() + (expires_in * 1000));
-            localStorage.setItem('expires', expiry);
-        }
-    };
+    //     save: function (response) {
+    //         const { access_token, refresh_token, expires_in } = response;
+    //         localStorage.setItem('access_token', access_token);
+    //         localStorage.setItem('refresh_token', refresh_token);
+    //         localStorage.setItem('expires_in', expires_in);
 
-    export async function logIn() {
-        console.log("spotify test loaded");
+    //         const now = new Date();
+    //         const expiry = new Date(now.getTime() + (expires_in * 1000));
+    //         localStorage.setItem('expires', expiry);
+    //     }
+    // };
 
     let weather = ""; // get weather from weather api
     let tracks = [];
@@ -39,28 +49,34 @@
         ["cloudy", "7dt4XvrQt8U8BQFQBKFV6u"],
     ]); // hardcoded playlists, put in env file?
 
-    window.onload = async () => {
-        //console.log("spotify test loaded");
+    export async function logIn() {
         await fetchWeather();
-      
-        if (!code) {
-            redirectToSpotify(clientId);
-        } else {
-            try {
-                const accessToken = await getAccessToken(clientId, code);
-                //console.log(accessToken);
-                const spotifyData = await getSpotifyData(accessToken);
-                //console.log(spotifyData);
-                tracks = await getTracksFromPlaylist(spotifyData);
-                localStorage.setItem("trackIds", JSON.stringify(tracks));
-                //console.log(tracks);
-                // TODO - add code to extract specific data from spotify
-                // and add queries to get playlist
-            } catch (error) {
-                console.log("error: ", error);
-                redirectToSpotify(clientId);
-            }
+        try {
+            const accessToken = await getAccessToken(clientId, code);
+            //console.log(accessToken);
+            const spotifyData = await getSpotifyData(accessToken);
+            //console.log(spotifyData);
+            tracks = await getTracksFromPlaylist(spotifyData);
+            localStorage.setItem("trackIds", JSON.stringify(tracks));
+            //console.log(tracks);
+            // TODO - add code to extract specific data from spotify
+            // and add queries to get playlist
+        } catch (error) {
+            console.log("error: ", error);
+            //    redirectToSpotify(clientId);
         }
+        if (code) {
+            console.log("login success");
+            push("/location"); // redirect to locationpage
+        } else {
+            redirectToSpotify(clientId);
+        }
+    }
+
+    export async function logOut() {
+        localStorage.clear();
+        push("/");
+        window.location.href = redirectUrl;
     }
 
     async function fetchWeather() {
@@ -134,24 +150,22 @@
         return access_token;
     }
 
-
     async function refreshToken() {
-
         const params = new URLSearchParams();
         params.append("client_id", clientId);
-        params.append("grant_type", 'refresh_token');
+        params.append("grant_type", "refresh_token");
         params.append("refresh_token", currentToken.refresh_token);
 
         const response = await fetch(tokenEndpoint, {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: params,
-    });
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: params,
+        });
 
-  return await response.json();
-}
+        return await response.json();
+    }
 
     // ^^ Code taken from spotify ^^
 
@@ -177,7 +191,7 @@
     }
 
     async function getTracksFromPlaylist(playlistData: any) {
-        let trackIds: Array<stringt> = [];
+        let trackIds: Array<string> = [];
         let trackInfo = playlistData.tracks.items;
         // itr
         //console.log(trackInfo);
@@ -188,7 +202,6 @@
 
         return trackIds;
     }
-
 </script>
 
 <head>
