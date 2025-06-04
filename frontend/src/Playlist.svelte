@@ -1,6 +1,7 @@
 <script>
     import './Playlist.css';
     import { onMount } from 'svelte';
+    import { logOut } from './SpotifyTest.svelte';
 
     let allTrackIds = [];
     let displayedTracks = [];
@@ -77,18 +78,13 @@
         // TODO - add routing
     }
 
-    function handleLogout() {
-        localStorage.removeItem('trackIds');
-        localStorage.removeItem('spotify_access_token');
-        // TODO - add routing
-    }
 </script>
 
 <div>
     <div class="header">
         <div class="title">ForecastFM</div>
         <div class="location-button" on:click={handleChangeLocation}>Change Location</div>
-        <div class="logout-button" on:click={handleLogout}>Logout</div>
+        <button class="logout-button" on:click={logOut}>Logout</button>
     </div>
     
     <div class="message">Here's your curated playlist created for</div>
