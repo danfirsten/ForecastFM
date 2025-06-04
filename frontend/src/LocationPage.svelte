@@ -1,7 +1,7 @@
 <script>
   import './LocationPage.css';
   import { logOut } from './SpotifyTest.svelte';
-  import { handleLogout } from './Playlist.svelte';
+  // import { handleLogout } from './Playlist.svelte';
   import { onMount } from 'svelte';
 
   // onMount(async () => {
