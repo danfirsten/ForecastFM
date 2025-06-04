@@ -83,7 +83,8 @@
         // TODO - add routing
     }
 
-    let weatherCode = 0; 
+    // let weatherCode = localStorage.getItem("weatherCode"); 
+    let weatherCode = 0;
     $: weatherIcon = getWeatherIcon(weatherCode); 
     function getWeatherIcon(code) {
         if (code === 0) return "Sunny";
@@ -97,7 +98,9 @@
     }
 
     let location = 'Davis, California';
-    let temperature = '88\u00B0F Sunny';
+    // let temperature = '88\u00B0F Sunny';
+    let temp = localStorage.getItem("temperature"); 
+    let temperature = temp + '\u00B0F ' + weatherIcon;
 
 </script>
 
