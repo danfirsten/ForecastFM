@@ -10,6 +10,7 @@
 ```
 cd frontend/
 npm install
+npm install svelte-spa-router
 npm install --save-dev typescript svelte-preprocess @tsconfig/svelte
 npm run dev
 
