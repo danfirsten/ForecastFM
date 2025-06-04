@@ -1,9 +1,15 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, redirect, request, session
+import os
+import secrets
+import base64
+import hashlib
+from urllib.parse import urlencode
 from flask_cors import CORS
 import requests
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True, origins=["http://127.0.0.1:5173"])
+app.secret_key = os.urandom(24)
 
 @app.route('/weather/<string:lat>/<string:lon>',methods=['GET'])
 def getWeatherCode(lon, lat):
@@ -46,7 +52,5 @@ def getWeatherCode(lon, lat):
         return "ERROR: bad query"
     
     return response
-
-
 if __name__ == '__main__':
     app.run(debug=True)
