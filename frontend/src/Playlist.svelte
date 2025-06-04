@@ -78,6 +78,22 @@
         // TODO - add routing
     }
 
+
+    let weatherCode = 0; 
+    $: weatherIcon = getWeatherIcon(weatherCode); 
+    function getWeatherIcon(code) {
+        if (code === 0) return "Sunny";
+        if ([1, 2, 3].includes(code)) return "Cloudy";
+        if ([45, 48].includes(code)) return "Fog";
+        if ([51, 53, 55, 56, 57].includes(code)) return "Drizzle";
+        if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return "Rain";
+        if ([71, 73, 75, 77, 85, 86].includes(code)) return "Snow";
+        if ([95, 96, 99].includes(code)) return "Thunderstorm";
+        return "Image"; 
+    }
+
+    let location = 'Davis, California';
+    let temperature = '88\u00B0F Sunny';
 </script>
 
 <div>
@@ -93,11 +109,13 @@
         <!-- info pulled from the weather API -->
         <!-- replace placeholders with stuff from Weather API  -->
         <div class="logo">
-            <img src="/assets/Sunny.png" alt="Sunny" />
+            <img src={`/assets/${weatherIcon}.png`} alt={weatherIcon} />
         </div>
         <div class="weather-text">
-            <div class="location">Davis, California</div>
-            <div class="temperature">88&deg; Sunny</div>
+            <!-- <div class="location">Davis, California</div>
+            <div class="temperature">88&deg; Sunny</div> -->
+            <div class="location">{location}</div>
+            <div class="temperature">{temperature}</div>
         </div>
     </div>
 

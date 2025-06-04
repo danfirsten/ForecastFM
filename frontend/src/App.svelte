@@ -10,8 +10,11 @@
     // });
     import LandingPage from './LandingPage.svelte';
     import LocationPage from './LocationPage.svelte';
+
     import Router from 'svelte-spa-router';
     import routes from './routes';
+    import Playlist from './Playlist.svelte';
+
 </script>
 
 <!--
@@ -45,6 +48,7 @@
     ></iframe>
 </body>
 -->
+
 <Router {routes} />
 <LandingPage />
 <LocationPage />
