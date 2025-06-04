@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+:root {
+  --blue-one: #8ecae6;
+  --blue-two: #219ebc;
+  --blue-three: #023047;
+  --yellow: #ffb703;
+  --orange: #fb8500;
+  --back-blue: #dff2fb;
+  --back-warm: #fff2cb;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.location-bg {
+  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
+  background: var(--back-blue);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+}
+
+.location-navbar {
+  width: 100vw;
+  background: #fff;
+  box-shadow: 0 2px 12px 0 rgba(2, 48, 71, 0.07);
+  z-index: 2;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2.5rem;
+}
+
+.location-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--blue-three);
+  text-align: left;
+}
+
+.logout-btn {
+  background: #fff;
+  border: 1px solid #bcdff2;
+  color: var(--blue-three);
+  border-radius: 6px;
+  padding: 0.35rem 1rem;
+  font-size: 0.95rem;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, border 0.2s;
+}
+.logout-btn:hover {
+  background: var(--blue-one);
+  border: 1px solid var(--blue-two);
+}
+
+.location-center-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 6vh;
+}
+
+.location-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px 0 rgba(2, 48, 71, 0.10);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 420px;
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.location-input-group {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 340px;
+  margin-bottom: 1.5rem;
+}
+
+.location-input {
+  flex: 1;
+  height: 48px;
+  padding: 0 1.2rem;
+  border: none;
+  border-radius: 12px 0 0 12px;
+  background: var(--back-warm);
+  font-size: 1.25rem;
+  color: var(--blue-three);
+  outline: none;
+  font-family: 'Poppins', sans-serif;
+}
+
+.search-btn {
+  height: 48px;
+  background: var(--back-warm);
+  border: none;
+  border-radius: 0 12px 12px 0;
+  padding: 0 1.1rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.search-btn:hover {
+  background: var(--yellow);
+}
+
+.current-location-link {
+  color: var(--blue-two);
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border 0.2s;
+  cursor: pointer;
+}
+.current-location-link:hover {
+  border-bottom: 2px solid var(--blue-two);
+}
+
+/* Remove geo-bg and SVG styles */
+.geo-bg, .geo-bg::before, .geo-bg::after, .geo-bg svg {
+  display: none !important;
+}
+
+.location-heading {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--blue-three);
+  margin-top: 0.5rem;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.logo-hero-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 0;
+  margin-bottom: 2.5rem;
+}
+
+.logo-hero {
+  width: 240px;
+  max-width: 60vw;
+  height: auto;
+  display: block;
+}
+
+.background-logo {
+  display: none;
+}
+
+.location-navbar {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 600px) {
+  .navbar-container {
+    padding: 1.2rem 0.7rem 1.2rem 0.7rem;
+  }
+  .location-title {
+    font-size: 1.3rem;
+  }
+  .location-input {
+    font-size: 1rem;
+    padding: 0.8rem 0.7rem;
+  }
+  .location-card {
+    padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+  }
+} 
