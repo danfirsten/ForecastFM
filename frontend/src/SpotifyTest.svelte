@@ -7,6 +7,8 @@
 
     const tokenEndpoint = "https://accounts.spotify.com/api/token";
     const scope = 'user-read-private user-read-email';
+    const callback = "http://127.0.0.1:5173/callback"
+    const locationCall = "http://127.0.0.1:5173/location";
  
     const currentToken = {
         get access_token() { return localStorage.getItem('access_token'); },
@@ -81,7 +83,7 @@
         const params = new URLSearchParams();
         params.append("client_id", clientId);
         params.append("response_type", "code");
-        params.append("redirect_uri", "http://127.0.0.1:5173/callback");
+        params.append("redirect_uri", locationCall);
         params.append("scope", scope);
         params.append("code_challenge_method", "S256");
         params.append("code_challenge", challenge);
@@ -122,7 +124,7 @@
         params.append("client_id", clientId);
         params.append("grant_type", "authorization_code");
         params.append("code", code);
-        params.append("redirect_uri", "http://127.0.0.1:5173/callback");
+        params.append("redirect_uri", locationCall);
         params.append("code_verifier", verifier!);
 
         const result = await fetch(tokenEndpoint, {

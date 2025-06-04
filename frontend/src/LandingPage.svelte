@@ -7,11 +7,11 @@
   // No script needed for static landing page
 
    window.onload = (async () => {
-        // document.getElementById("forecast-button")?.addEventListener("click", logIn)
-        document.getElementById("forecast-button")?.addEventListener("click", goToLocation)
+        document.getElementById("forecast-button")?.addEventListener("click", logIn)
+        // document.getElementById("forecast-button")?.addEventListener("click", goToLocation)
     });   
     function goToLocation() {
-      push('/playlist');
+      push('/location');
     }
 </script>
 
