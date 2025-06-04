@@ -26,7 +26,8 @@ body {
 }
 
 /* Header Buttons */
-.location-button, .logout-button {
+.location-button,
+.logout-button {
   background-color: #dff2fb;
   color: #023047;
   padding: 8px 15px;
@@ -36,7 +37,8 @@ body {
   font-size: 12px;
 }
 
-.location-button:hover, .logout-button:hover {
+.location-button:hover,
+.logout-button:hover {
   background-color: #c7e9f5;
 }
 
@@ -74,9 +76,8 @@ body {
 }
 
 .logo img {
-  width: 60px;
   height: 60px;
-  margin-right: 50px;
+  margin-right: 60px;
 }
 
 .weather-text {
