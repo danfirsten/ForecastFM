@@ -1,17 +1,20 @@
 <script>
   import './LocationPage.css';
   import { logOut } from './SpotifyTest.svelte';
+  // import { handleLogout } from './Playlist.svelte';
+  import { onMount } from 'svelte';
 
-  window.onload = (async () => {
-    document.getElementById("logout-btn")?.addEventListener("click", logOut);
-  }); 
+  // onMount(async () => {
+  //   console.log("location page loads");
+  //   document.getElementById("logout-btn")?.addEventListener("click", logOut);
+  // }); 
 </script>
 
 <div class="location-bg">
   <nav class="location-navbar">
     <div class="navbar-container">
       <span class="location-title">ForecastFM</span>
-      <button id="logout-btn" class="logout-btn">Logout</button>
+      <button id="logout-btn" on:click={logOut} class="logout-btn">Logout</button>
     </div>
   </nav>
   <div class="location-center-content">

@@ -74,7 +74,6 @@
     }
 
     export async function logOut() {
-        console.log("log out");
         localStorage.clear();
         push("/");
         window.location.href = redirectUrl;
