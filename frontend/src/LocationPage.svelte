@@ -1,12 +1,17 @@
 <script>
   import './LocationPage.css';
+  import { logOut } from './SpotifyTest.svelte';
+
+  window.onload = (async () => {
+    document.getElementById("logout-btn")?.addEventListener("click", logOut);
+  }); 
 </script>
 
 <div class="location-bg">
   <nav class="location-navbar">
     <div class="navbar-container">
       <span class="location-title">ForecastFM</span>
-      <button class="logout-btn">Logout</button>
+      <button id="logout-btn" class="logout-btn">Logout</button>
     </div>
   </nav>
   <div class="location-center-content">

@@ -1,79 +1,75 @@
 <script lang="ts" context="module">
+    import { push } from 'svelte-spa-router';
+    import './LocationPage.svelte';
     const clientId = "0553802b6f0b4a3f8357fabcbecc3817"; // get from spotify Dev portal
     // ^ TODO Put this in env file later
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code"); // if undef then user isn't authorized
+    const redirectUrl = "http://127.0.0.1:5173";
 
 
     const tokenEndpoint = "https://accounts.spotify.com/api/token";
     const scope = 'user-read-private user-read-email';
  
-    const currentToken = {
-        get access_token() { return localStorage.getItem('access_token'); },
-        get refresh_token() { return localStorage.getItem('refresh_token'); },
-        get expires_in() { return localStorage.getItem('refresh_in') },
-        get expires() { return localStorage.getItem('expires')},
+    // const currentToken = {
+    //     get access_token() { return localStorage.getItem('access_token'); },
+    //     get refresh_token() { return localStorage.getItem('refresh_token'); },
+    //     get expires_in() { return localStorage.getItem('refresh_in') },
+    //     get expires() { return localStorage.getItem('expires')},
 
-        save: function (response) {
-            const { access_token, refresh_token, expires_in } = response;
-            localStorage.setItem('access_token', access_token);
-            localStorage.setItem('refresh_token', refresh_token);
-            localStorage.setItem('expires_in', expires_in);
+    //     save: function (response) {
+    //         const { access_token, refresh_token, expires_in } = response;
+    //         localStorage.setItem('access_token', access_token);
+    //         localStorage.setItem('refresh_token', refresh_token);
+    //         localStorage.setItem('expires_in', expires_in);
 
-            const now = new Date();
-            const expiry = new Date(now.getTime() + (expires_in * 1000));
-            localStorage.setItem('expires', expiry);
-        }
-    };
-    // export async function logIn() {
-    //     console.log("spotify test loaded");
-    //     if (!code) {
-    //         redirectToSpotify(clientId);
-    //     } else {
-    //         const accessToken = await getAccessToken(clientId, code);
-    //         const spotifyData = await getSpotifyData(accessToken);
-    //         console.log(spotifyData);
-    //         // TODO - add code to extract specific data from spotify
-    //         // and add queries to get playlist
+    //         const now = new Date();
+    //         const expiry = new Date(now.getTime() + (expires_in * 1000));
+    //         localStorage.setItem('expires', expiry);
     //     }
-    // }
+    // };
+
+
+    let weather = ""; // get weather from weather api
+    let tracks = [];
+
+    let playlist_ids = new Map([
+        ["sunny", "1xaUPRpVCbNaAzgsKrHHMp"],
+        ["rainy", "47S4MBG0EEXwA0GdJUA4Ur"],
+        ["night", "5elnsQozvPDX2m0WEOV1z4"],
+        ["cloudy", "7dt4XvrQt8U8BQFQBKFV6u"],
+    ]); // hardcoded playlists, put in env file?
+
 
     export async function logIn() {
-        console.log("spotify test loaded");
-
-        let weather = ""; // get weather from weather api
-        let tracks = [];
-
-        let playlist_ids = new Map([
-            ["sunny", "1xaUPRpVCbNaAzgsKrHHMp"],
-            ["rainy", "47S4MBG0EEXwA0GdJUA4Ur"],
-            ["night", "5elnsQozvPDX2m0WEOV1z4"],
-            ["cloudy", "7dt4XvrQt8U8BQFQBKFV6u"],
-        ]); // hardcoded playlists, put in env file?
-
-        window.onload = async () => {
-            //console.log("spotify test loaded");
-            await fetchWeather();
-        
-            if (!code) {
-                redirectToSpotify(clientId);
-            } else {
-                try {
-                    const accessToken = await getAccessToken(clientId, code);
-                    //console.log(accessToken);
-                    const spotifyData = await getSpotifyData(accessToken);
-                    //console.log(spotifyData);
-                    tracks = await getTracksFromPlaylist(spotifyData);
-                    localStorage.setItem("trackIds", JSON.stringify(tracks));
-                    //console.log(tracks);
-                    // TODO - add code to extract specific data from spotify
-                    // and add queries to get playlist
-                } catch (error) {
-                    console.log("error: ", error);
-                    redirectToSpotify(clientId);
-                }
-            }
+        await fetchWeather();
+        try {
+            const accessToken = await getAccessToken(clientId, code);
+            //console.log(accessToken);
+            const spotifyData = await getSpotifyData(accessToken);
+            //console.log(spotifyData);
+            tracks = await getTracksFromPlaylist(spotifyData);                    
+            localStorage.setItem("trackIds", JSON.stringify(tracks));
+            //console.log(tracks);
+                // TODO - add code to extract specific data from spotify
+                // and add queries to get playlist                 
+        } catch (error) {
+            console.log("error: ", error);
+        //    redirectToSpotify(clientId);
         }
+        if (code) {
+            console.log("login success"); 
+            push('/location'); // redirect to locationpage
+        } else {
+            redirectToSpotify(clientId);
+        }
+    }
+
+    export async function logOut() {
+        console.log("log out");
+        localStorage.clear();
+        push('/');
+        window.location.href = redirectUrl;
     }
 
     async function fetchWeather() {
@@ -190,7 +186,7 @@
     }
 
     async function getTracksFromPlaylist(playlistData: any) {
-        let trackIds: Array<stringt> = [];
+        let trackIds: Array<string> = [];
         let trackInfo = playlistData.tracks.items;
         // itr
         //console.log(trackInfo);

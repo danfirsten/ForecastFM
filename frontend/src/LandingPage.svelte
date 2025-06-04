@@ -6,13 +6,12 @@
   import { push } from 'svelte-spa-router';
   // No script needed for static landing page
 
-   window.onload = (async () => {
-        document.getElementById("forecast-button")?.addEventListener("click", logIn)
-        // document.getElementById("forecast-button")?.addEventListener("click", goToLocation)
-    });   
-    function goToLocation() {
-      push('/location');
-    }
+  window.onload = (async () => {
+      document.getElementById("forecast-button")?.addEventListener("click", logIn);
+  });   
+  function goToLocation() {
+    push('/location');
+  }
 </script>
 
 <div class="landing-outer">

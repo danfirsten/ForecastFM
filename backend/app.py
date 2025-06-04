@@ -10,6 +10,7 @@ import requests
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
+clientId = "0553802b6f0b4a3f8357fabcbecc3817"
 
 @app.route('/weather/<string:lat>/<string:lon>',methods=['GET'])
 def getWeatherCode(lon, lat):
@@ -50,7 +51,6 @@ def getWeatherCode(lon, lat):
 
     if "current" not in response:
         return "ERROR: bad query"
-    
-    return response
+    return response    
 if __name__ == '__main__':
     app.run(debug=True)
