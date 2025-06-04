@@ -38,7 +38,21 @@
             let weatherCode = data["weather_code"];
             let temperature = data["temperature"];
 
-            localStorage.setItem("weatherCode",weatherCode);
+            function getWeatherIcon(code: number) {
+              if (code === 0) return "Sunny";
+              if ([1, 2, 3].includes(code)) return "Cloudy";
+              if ([45, 48].includes(code)) return "Foggy";
+              if ([51, 53, 55, 56, 57].includes(code)) return "Drizzle";
+              if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return "Rainy";
+              if ([71, 73, 75, 77, 85, 86].includes(code)) return "Snowy";
+              if ([95, 96, 99].includes(code)) return "Stormy";
+              return "Unknown"; 
+          }
+
+            let weather = getWeatherIcon(weatherCode);
+
+
+            localStorage.setItem("weather",weather);
             localStorage.setItem("temperature",temperature);
 
             // // get city name from coordinates
