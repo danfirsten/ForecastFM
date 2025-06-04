@@ -6,10 +6,6 @@ body {
   margin: 0;
   background-color: white;
   color: #023047;
-}
-
-html,
-body {
   height: 100%;
   overflow-y: auto;
 }
