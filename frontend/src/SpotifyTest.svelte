@@ -29,36 +29,37 @@
     export async function logIn() {
         console.log("spotify test loaded");
 
-    let weather = ""; // get weather from weather api
-    let tracks = [];
+        let weather = ""; // get weather from weather api
+        let tracks = [];
 
-    let playlist_ids = new Map([
-        ["sunny", "1xaUPRpVCbNaAzgsKrHHMp"],
-        ["rainy", "47S4MBG0EEXwA0GdJUA4Ur"],
-        ["night", "5elnsQozvPDX2m0WEOV1z4"],
-        ["cloudy", "7dt4XvrQt8U8BQFQBKFV6u"],
-    ]); // hardcoded playlists, put in env file?
+        let playlist_ids = new Map([
+            ["sunny", "1xaUPRpVCbNaAzgsKrHHMp"],
+            ["rainy", "47S4MBG0EEXwA0GdJUA4Ur"],
+            ["night", "5elnsQozvPDX2m0WEOV1z4"],
+            ["cloudy", "7dt4XvrQt8U8BQFQBKFV6u"],
+        ]); // hardcoded playlists, put in env file?
 
-    window.onload = async () => {
-        //console.log("spotify test loaded");
-        await fetchWeather();
-      
-        if (!code) {
-            redirectToSpotify(clientId);
-        } else {
-            try {
-                const accessToken = await getAccessToken(clientId, code);
-                //console.log(accessToken);
-                const spotifyData = await getSpotifyData(accessToken);
-                //console.log(spotifyData);
-                tracks = await getTracksFromPlaylist(spotifyData);
-                localStorage.setItem("trackIds", JSON.stringify(tracks));
-                //console.log(tracks);
-                // TODO - add code to extract specific data from spotify
-                // and add queries to get playlist
-            } catch (error) {
-                console.log("error: ", error);
+        window.onload = async () => {
+            //console.log("spotify test loaded");
+            await fetchWeather();
+        
+            if (!code) {
                 redirectToSpotify(clientId);
+            } else {
+                try {
+                    const accessToken = await getAccessToken(clientId, code);
+                    //console.log(accessToken);
+                    const spotifyData = await getSpotifyData(accessToken);
+                    //console.log(spotifyData);
+                    tracks = await getTracksFromPlaylist(spotifyData);
+                    localStorage.setItem("trackIds", JSON.stringify(tracks));
+                    //console.log(tracks);
+                    // TODO - add code to extract specific data from spotify
+                    // and add queries to get playlist
+                } catch (error) {
+                    console.log("error: ", error);
+                    redirectToSpotify(clientId);
+                }
             }
         }
     }
@@ -67,7 +68,7 @@
         // fetch weather from backend
         // need location
 
-        weather = "sunny";
+        const weather = "sunny";
     }
 
     // vv API Code taken from devloper.spotify.com vv
@@ -177,7 +178,7 @@
     }
 
     async function getTracksFromPlaylist(playlistData: any) {
-        let trackIds: Array<stringt> = [];
+        let trackIds: Array<string> = [];
         let trackInfo = playlistData.tracks.items;
         // itr
         //console.log(trackInfo);
@@ -197,3 +198,4 @@
     <title>Forecast FM</title>
 </head>
 <body> </body>
+<div></div>
