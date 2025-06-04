@@ -1,16 +1,26 @@
 <script lang="ts" context="module">
-    import { push } from 'svelte-spa-router';
-    import './LocationPage.svelte';
+    import { push } from "svelte-spa-router";
+    import "./LocationPage.svelte";
+    import { onMount } from "svelte";
     const clientId = "0553802b6f0b4a3f8357fabcbecc3817"; // get from spotify Dev portal
     // ^ TODO Put this in env file later
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code"); // if undef then user isn't authorized
     const redirectUrl = "http://127.0.0.1:5173";
 
-
     const tokenEndpoint = "https://accounts.spotify.com/api/token";
-    const scope = 'user-read-private user-read-email';
- 
+    const scope = "user-read-private user-read-email";
+
+    // onMount(async () => {
+    //     console.log("check if logged in");
+    //     const params = new URLSearchParams(window.location.search);
+    //     let userCode = params.get("code");
+    //     console.log("user code: ", userCode);
+    //     if (userCode != "") {
+    //         // logged in
+    //         push("/location");
+    //     }
+    // });
     // const currentToken = {
     //     get access_token() { return localStorage.getItem('access_token'); },
     //     get refresh_token() { return localStorage.getItem('refresh_token'); },
@@ -29,7 +39,6 @@
     //     }
     // };
 
-
     let weather = ""; // get weather from weather api
     let tracks = [];
 
@@ -40,7 +49,6 @@
         ["cloudy", "7dt4XvrQt8U8BQFQBKFV6u"],
     ]); // hardcoded playlists, put in env file?
 
-
     export async function logIn() {
         await fetchWeather();
         try {
@@ -48,18 +56,18 @@
             //console.log(accessToken);
             const spotifyData = await getSpotifyData(accessToken);
             //console.log(spotifyData);
-            tracks = await getTracksFromPlaylist(spotifyData);                    
+            tracks = await getTracksFromPlaylist(spotifyData);
             localStorage.setItem("trackIds", JSON.stringify(tracks));
             //console.log(tracks);
-                // TODO - add code to extract specific data from spotify
-                // and add queries to get playlist                 
+            // TODO - add code to extract specific data from spotify
+            // and add queries to get playlist
         } catch (error) {
             console.log("error: ", error);
-        //    redirectToSpotify(clientId);
+            //    redirectToSpotify(clientId);
         }
         if (code) {
-            console.log("login success"); 
-            push('/location'); // redirect to locationpage
+            console.log("login success");
+            push("/location"); // redirect to locationpage
         } else {
             redirectToSpotify(clientId);
         }
@@ -67,6 +75,7 @@
 
     export async function logOut() {
         localStorage.clear();
+        push("/");
         window.location.href = redirectUrl;
     }
 
@@ -141,24 +150,22 @@
         return access_token;
     }
 
-
     async function refreshToken() {
-
         const params = new URLSearchParams();
         params.append("client_id", clientId);
-        params.append("grant_type", 'refresh_token');
+        params.append("grant_type", "refresh_token");
         params.append("refresh_token", currentToken.refresh_token);
 
         const response = await fetch(tokenEndpoint, {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: params,
-    });
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: params,
+        });
 
-  return await response.json();
-}
+        return await response.json();
+    }
 
     // ^^ Code taken from spotify ^^
 
@@ -195,7 +202,6 @@
 
         return trackIds;
     }
-
 </script>
 
 <head>
