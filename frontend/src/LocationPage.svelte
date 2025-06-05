@@ -11,8 +11,6 @@
   //   document.getElementById("logout-btn")?.addEventListener("click", logOut);
   // }); 
 
-  let status: HTMLParagraphElement | null = null;
-
   function geoFindMe() {
       console.log("Pressed");
           
@@ -75,11 +73,6 @@
               localStorage.setItem("city", city);
               localStorage.setItem("state", state);
 
-              // Update status display
-              const statusElement = document.querySelector('.location-card p');
-              if (statusElement) {
-                statusElement.textContent = `${weather} ${temperature}°F in ${city}, ${state}`;
-              }
               console.log("Completed- data stored");
 
               // Navigate to playlist page after successful data storage
@@ -92,47 +85,23 @@
               localStorage.setItem("temperature", temperature.toString());
               localStorage.setItem("city", "Unknown City");
               localStorage.setItem("state", "Unknown State");
-              const statusElement = document.querySelector('.location-card p');
-              if (statusElement) {
-                statusElement.textContent = `${weather} ${temperature}°F`;
-              }       
 
               // Still navigate even if geocoding fails
               push('/playlist');
             }
           } catch (weatherError) {
             console.error("Weather API failed:", weatherError);
-            const statusElement = document.querySelector('.location-card p');
-            if (statusElement) {
-              statusElement.style.color = "red";
-              statusElement.textContent = "Failed to get weather data";
-            }
           }
       }
 
       function error() {
           console.log("Geolocation error");
-          const statusElement = document.querySelector('.location-card p');
-          if (statusElement) {
-            statusElement.style.color = "red";
-            statusElement.textContent = "Unable to retrieve your location";
-          }
       }
 
       if (!navigator.geolocation) {
         console.log("Geolocation not supported");
-          const statusElement = document.querySelector('.location-card p');
-          if (statusElement) {
-            statusElement.style.color = "red";
-            statusElement.textContent = "Geolocation is not supported by your browser";
-          }
       } else {
           console.log("Starting geolocation");
-          const statusElement = document.querySelector('.location-card p');
-          if (statusElement) {
-            statusElement.style.color = "black";
-            statusElement.textContent = "Locating…";
-          }
           navigator.geolocation.getCurrentPosition(success, error);
       }
   }
@@ -158,7 +127,6 @@
         </button>
       </div>
       <a href="#" class="current-location-link" on:click={geoFindMe}>Use my current location</a>
-      <p bind:this={status}></p>
     </div>
   </div>
 </div> 
