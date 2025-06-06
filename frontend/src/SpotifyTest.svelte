@@ -47,6 +47,8 @@
         ["rainy", "47S4MBG0EEXwA0GdJUA4Ur"],
         ["night", "5elnsQozvPDX2m0WEOV1z4"],
         ["cloudy", "7dt4XvrQt8U8BQFQBKFV6u"],
+        ["stormy", "2MI6O6IkwLJ85rJHbARNJ9"],
+        ["snowy", "7bFSWgWheCLGmVDiTkOKPY"],
     ]); // hardcoded playlists, put in env file?
 
     export async function logIn() {
