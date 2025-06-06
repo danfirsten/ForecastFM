@@ -50,5 +50,5 @@
 -->
 
 <Router {routes} />
-<LandingPage />
-<LocationPage />
+<!-- <LandingPage />
+<LocationPage /> -->

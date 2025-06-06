@@ -1,6 +1,6 @@
 <script lang="ts">
   import './LocationPage.css';
-
+  import { push } from "svelte-spa-router";
   import { logOut } from './SpotifyTest.svelte';
   // import { handleLogout } from './Playlist.svelte';
   import { onMount } from 'svelte';
@@ -132,6 +132,8 @@
 
       if (!status) return;
       status.textContent = weather + " " + temperature + "°F";
+
+      push("/playlist");
   }
 
 </script>
