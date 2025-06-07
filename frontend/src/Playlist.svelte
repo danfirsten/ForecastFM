@@ -2,6 +2,7 @@
     import './Playlist.css';
     import { onMount } from 'svelte';
     import { logOut } from './SpotifyTest.svelte';
+    import { push } from 'svelte-spa-router';
 
     let allTrackIds = [];
     let displayedTracks = [];
@@ -76,15 +77,13 @@
 
     function handleChangeLocation() {
         // TODO - add routing
+        push("/location");
     }
 
-
-    $: weather = localStorage.getItem("weather");
-
-    
-
-    let location = 'Davis, California';
-    let temperature = '88\u00B0F Sunny';
+    let location = localStorage.getItem("location");
+    let weather = localStorage.getItem("weather");
+    let temperature = localStorage.getItem("temperature");
+    let fullWeather = `${temperature}\u00B0F ${weather}`;
 </script>
 
 <div>
@@ -106,7 +105,7 @@
             <!-- <div class="location">Davis, California</div>
             <div class="temperature">88&deg; Sunny</div> -->
             <div class="location">{location}</div>
-            <div class="temperature">{temperature}</div>
+            <div class="temperature">{fullWeather}</div>
         </div>
     </div>
 
