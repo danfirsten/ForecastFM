@@ -73,7 +73,7 @@
 
             console.log(data);
 
-            let name: string = data.name;
+            let name: string = getNameFromResponse(data);
             if (name.length == 0) name = "Current Location";
             
             localStorage.setItem("location",name);
@@ -98,6 +98,12 @@
             status.textContent = "Locating…";
             navigator.geolocation.getCurrentPosition(success, error);
         }
+  }
+
+  function getNameFromResponse(resp: object) {
+    let name = resp.name;
+    if (name.length > 0) return name;
+    return resp.display_name;
   }
 
   async function getWeather(latitude: number, longitude: number) {
