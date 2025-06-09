@@ -1,12 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
+:root {
+  --blue-one: #8ecae6;
+  --blue-two: #219ebc;
+  --blue-three: #023047;
+  --yellow: #ffb703;
+  --orange: #fb8500;
+  --back-blue: #dff2fb;
+  --back-warm: #fff2cb;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background: #DFF2FB;
+  background: var(--back-blue);
   font-family: 'Poppins', sans-serif;
   height: 100vh;
   overflow: hidden;
@@ -20,10 +30,8 @@ body {
 
 .landing-container {
   flex: 1;
-  max-width: 900px;
-  margin: 0 auto;
   padding: 1rem 2rem;
-  background: #DFF2FB;
+  background: var(--back-blue);
   border-radius: 8px;
   text-align: center;
   display: flex;
@@ -35,7 +43,8 @@ body {
   font-size: 2.8rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  color: #023047;
+  color: var(--blue-three);
+  justify-content: center;
 }
 
 .subtitle {
@@ -45,7 +54,7 @@ body {
 }
 
 .cta-btn {
-  background: #023047;
+  background: var(--blue-three);
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -58,7 +67,7 @@ body {
 }
 
 .cta-btn:hover {
-  background: #219ebc;
+  background: var(--blue-two);
 }
 
 .how-section {
@@ -76,7 +85,7 @@ body {
   font-weight: 700;
   padding-top: 1.5rem;
   margin-bottom: 1.5rem;
-  color: #023047;
+  color: var(--blue-three);
   text-align: center;
 }
 
@@ -95,8 +104,8 @@ body {
 }
 
 .circle {
-  background: #ffb703;
-  color: #023047;
+  background: var(--yellow);
+  color: var(--blue-three);
   width: 140px;
   height: 140px;
   border-radius: 50%;
@@ -118,7 +127,7 @@ body {
 .circle-desc {
   font-size: 1rem;
   font-weight: 400;
-  color: #023047;
+  color: var(--blue-three);
   text-align: center;
   line-height: 1.2;
 }
