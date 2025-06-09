@@ -29,6 +29,7 @@ export default defineConfig({
   plugins: [svelte()],
   test: {
     environment: "jsdom",
+    setupFiles: "./src/setupTests.ts",
   },
   resolve: process.env.VITEST
     ? {
