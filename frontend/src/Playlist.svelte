@@ -1,8 +1,9 @@
 <script>
-    import './Playlist.css';
-    import { onMount } from 'svelte';
-    import { logOut } from './SpotifyTest.svelte';
-    import { push } from 'svelte-spa-router';
+    import "./Playlist.css";
+    import { onMount } from "svelte";
+    import { logOut } from "./SpotifyTest.svelte";
+    import { fetchPlaylist } from "./SpotifyTest.svelte";
+    import { push } from "svelte-spa-router";
 
     let allTrackIds = [];
     let displayedTracks = [];
@@ -12,15 +13,20 @@
         loadTrackIds();
     });
 
-    function loadTrackIds() {
+    async function loadTrackIds() {
         // Get track IDs from localStorage
+
+        //console.log(localStorage.getItem("weather"));
+        await fetchPlaylist();
         let _trackIds = localStorage.getItem("trackIds");
         const trackIds = _trackIds ? JSON.parse(_trackIds) : [];
-        
+
         console.log("Loaded track IDs:", trackIds);
-        
+
         if (trackIds.length === 0) {
-            console.log("No track IDs found in localStorage, using placeholder data");
+            console.log(
+                "No track IDs found in localStorage, using placeholder data",
+            );
             // Placeholder track IDs for testing
             allTrackIds = [
                 "4uLU6hMCjMI75M1A2tKUQC", // Never Gonna Give You Up - Rick Astley
@@ -52,12 +58,12 @@
                 "3cfOd4CMv2snFaKAnMdnvK", // Midnight City - M83
                 "6f70BpkMDtFoIGwdaHMdpc", // Thunder - Imagine Dragons
                 "6dBUzqjtbnIz1YMXvdyQKE", // Happier - Marshmello ft. Bastille
-                "5ygDXis42ncn6kYG14lEZG"  // Heat Waves - Glass Animals
+                "5ygDXis42ncn6kYG14lEZG", // Heat Waves - Glass Animals
             ];
         } else {
             allTrackIds = trackIds;
         }
-        
+
         // Randomly sample 20 songs
         shuffleAndDisplayTracks();
         isLoading = false;
@@ -88,13 +94,17 @@
 <div>
     <div class="header">
         <div class="playlist-title">ForecastFM</div>
-        <div class="location-button" on:click={handleChangeLocation}>Change Location</div>
+        <div class="location-button" on:click={handleChangeLocation}>
+            Change Location
+        </div>
         <button class="logout-button" on:click={logOut}>Logout</button>
     </div>
 
-    <div class={`page-container weather-${weather?.toLowerCase() || 'default'}`}>
+    <div
+        class={`page-container weather-${weather?.toLowerCase() || "default"}`}
+    >
         <div class="message">Here's your playlist created for</div>
-        
+
         <div class="weather">
             <!-- info pulled from the weather API -->
             <div class="logo">
@@ -118,9 +128,11 @@
             </div>
         {:else}
             <div class="refresh-container">
-                <button on:click={refreshPlaylist} class="refresh-btn">Refresh</button>
+                <button on:click={refreshPlaylist} class="refresh-btn"
+                    >Refresh</button
+                >
             </div>
-            
+
             <div class="playlist">
                 {#each displayedTracks as trackId, index (trackId)}
                     <div class="song-embed">
@@ -131,7 +143,6 @@
                             width="100%"
                             height="100"
                             frameBorder="0"
-                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                         ></iframe>
                     </div>
                 {/each}
