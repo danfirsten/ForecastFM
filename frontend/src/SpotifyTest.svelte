@@ -39,18 +39,21 @@
     //     }
     // };
 
-    let weather = ""; // get weather from weather api
+    let weather: any = null; // get weather from weather api
     let tracks = [];
 
     let playlist_ids = new Map([
-        ["sunny", "1xaUPRpVCbNaAzgsKrHHMp"],
-        ["rainy", "47S4MBG0EEXwA0GdJUA4Ur"],
-        ["night", "5elnsQozvPDX2m0WEOV1z4"],
-        ["cloudy", "7dt4XvrQt8U8BQFQBKFV6u"],
+        ["Sunny", "1xaUPRpVCbNaAzgsKrHHMp"],
+        ["Rainy", "47S4MBG0EEXwA0GdJUA4Ur"],
+        ["Night", "5elnsQozvPDX2m0WEOV1z4"],
+        ["Cloudy", "7dt4XvrQt8U8BQFQBKFV6u"],
+        ["Stormy", "2MI6O6IkwLJ85rJHbARNJ9"],
+        ["Snowy", "7bFSWgWheCLGmVDiTkOKPY"],
+        ["Foggy", "7caekjzU5qY305TcAzWfpV"],
     ]); // hardcoded playlists, put in env file?
 
     export async function logIn() {
-        await fetchWeather();
+        weather = await fetchWeather();
         try {
             const accessToken = await getAccessToken(clientId, code);
             //console.log(accessToken);
@@ -82,8 +85,11 @@
     async function fetchWeather() {
         // fetch weather from backend
         // need location
-
-        weather = "sunny";
+        try {
+            return localStorage.getItem("weather");
+        } catch {
+            return "Sunny";
+        }
     }
 
     // vv API Code taken from devloper.spotify.com vv

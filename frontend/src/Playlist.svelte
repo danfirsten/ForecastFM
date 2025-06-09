@@ -2,6 +2,7 @@
     import './Playlist.css';
     import { onMount } from 'svelte';
     import { logOut } from './SpotifyTest.svelte';
+    import { push } from 'svelte-spa-router';
 
     let allTrackIds = [];
     let displayedTracks = [];
@@ -75,12 +76,11 @@
     }
 
     function handleChangeLocation() {
-        // TODO - add routing
+        push("/location");
     }
 
 
-    // let weatherCode = 0; 
-    let weatherCode = localStorage.getItem("weatherCode"); 
+    let weatherCode = 0; 
     $: weatherIcon = getWeatherIcon(weatherCode); 
     function getWeatherIcon(code) {
         if (code === 0) return "Sunny";
@@ -94,62 +94,60 @@
     }
 
     let location = 'Davis, California';
-    // let temperature = '88\u00B0F Sunny';
-    let temp = localStorage.getItem("temperature"); 
-    let temperature = temp + '\u00B0F ' + weatherIcon;
-
+    let temperature = '88\u00B0F Sunny';
 </script>
 
 <div>
     <div class="header">
-        <div class="title">ForecastFM</div>
+        <div class="playlist-title">ForecastFM</div>
         <div class="location-button" on:click={handleChangeLocation}>Change Location</div>
         <button class="logout-button" on:click={logOut}>Logout</button>
     </div>
-    
-    <div class="message">Here's your curated playlist created for</div>
-    
-    <div class="weather">
-        <!-- info pulled from the weather API -->
-        <!-- replace placeholders with stuff from Weather API  -->
-        <div class="logo">
-            <img src={`/assets/${weatherIcon}.png`} alt={weatherIcon} />
-        </div>
-        <div class="weather-text">
-            <!-- <div class="location">Davis, California</div>
-            <div class="temperature">88&deg; Sunny</div> -->
-            <div class="location">{location}</div>
-            <div class="temperature">{temperature}</div>
-        </div>
-    </div>
 
-    {#if isLoading}
-        <div class="loading">
-            <p>Loading your playlist...</p>
-        </div>
-    {:else if displayedTracks.length === 0}
-        <div class="empty-state">
-            <p>No tracks found.</p>
-        </div>
-    {:else}
-        <div class="refresh-container">
-            <button on:click={refreshPlaylist} class="refresh-btn">🔄 Refresh</button>
-        </div>
+    <div class={`page-container weather-${weather?.toLowerCase() || 'default'}`}>
+        <div class="message">Here's your playlist created for</div>
         
-        <div class="playlist">
-            {#each displayedTracks as trackId, index (trackId)}
-                <div class="song-embed">
-                    <iframe
-                        title="Spotify Track {index + 1}"
-                        style="border-radius:12px"
-                        src="https://open.spotify.com/embed/track/{trackId}?utm_source=generator&theme=0"
-                        width="100%"
-                        height="100"
-                        frameBorder="0"
-                        loading="lazy"
-                    ></iframe>
-                </div>
-            {/each}
+        <div class="weather">
+            <!-- info pulled from the weather API -->
+            <div class="logo">
+                <img src={`/assets/${weather}.png`} alt={weather} />
+            </div>
+            <div class="weather-text">
+                <!-- <div class="location">Davis, California</div>
+                <div class="temperature">88&deg; Sunny</div> -->
+                <div class="location">{location}</div>
+                <div class="temperature">{fullWeather}</div>
+            </div>
         </div>
-    {/if}
+
+        {#if isLoading}
+            <div class="loading">
+                <p>Loading your playlist...</p>
+            </div>
+        {:else if displayedTracks.length === 0}
+            <div class="empty-state">
+                <p>No tracks found.</p>
+            </div>
+        {:else}
+            <div class="refresh-container">
+                <button on:click={refreshPlaylist} class="refresh-btn">Refresh</button>
+            </div>
+            
+            <div class="playlist">
+                {#each displayedTracks as trackId, index (trackId)}
+                    <div class="song-embed">
+                        <iframe
+                            title="Spotify Track {index + 1}"
+                            style="border-radius:12px"
+                            src="https://open.spotify.com/embed/track/{trackId}?utm_source=generator&theme=0"
+                            width="100%"
+                            height="100"
+                            frameBorder="0"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        ></iframe>
+                    </div>
+                {/each}
+            </div>
+        {/if}
+    </div>
 </div>
