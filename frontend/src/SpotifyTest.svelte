@@ -92,21 +92,20 @@
         } catch (error) {
             console.error("couldn't find weather", error);
         }
-        console.log(weather);
+        // console.log(weather);
 
         // assume user is already logged in
-        const accessToken = await getAccessToken(clientId, code);
-        // try {
-        // }
-        // catch {
-        //     console.log("no access token");
-        //     redirectToSpotify(clientId);
-        // }
-        const spotifyData = await getSpotifyData(accessToken);
-        tracks = await getTracksFromPlaylist(spotifyData);
-        console.log("frist track: ", tracks[0]);
-        localStorage.setItem("trackIds", JSON.stringify(tracks));
-        console.log("loaded weather tracks.");
+        try {
+            const accessToken = await getAccessToken(clientId, code);
+            const spotifyData = await getSpotifyData(accessToken);
+            tracks = await getTracksFromPlaylist(spotifyData);
+            // console.log("frist track: ", tracks[0]);
+            localStorage.setItem("trackIds", JSON.stringify(tracks));
+            console.log("loaded weather tracks.");
+        } catch {
+            console.log("no access token");
+            // redirectToSpotify(clientId);
+        }
         //return tracks;
     }
 
@@ -204,7 +203,7 @@
         */
         let x = localStorage.getItem("weather");
         let playlist_id = playlist_ids.get(x);
-        console.log("playlist id: ", playlist_id);
+        // console.log("playlist id: ", playlist_id);
         const url = "https://api.spotify.com/v1/playlists/" + playlist_id;
 
         const result = await fetch(url, {

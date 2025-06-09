@@ -1,6 +1,7 @@
 <script>
     import "./Playlist.css";
     import { onMount } from "svelte";
+    import { logIn } from "./SpotifyTest.svelte";
     import { logOut } from "./SpotifyTest.svelte";
     import { fetchPlaylist } from "./SpotifyTest.svelte";
     import { push } from "svelte-spa-router";
@@ -81,7 +82,9 @@
         shuffleAndDisplayTracks();
     }
 
-    function handleChangeLocation() {
+    async function handleChangeLocation() {
+        await logOut();
+        // await logIn();
         push("/location");
     }
 
