@@ -104,19 +104,20 @@
         <button class="logout-button" on:click={logOut}>Logout</button>
     </div>
 
-    <div class={`page-container weather-${weather?.toLowerCase() || 'default'}`}>
+    <div class={`page-container weather-${weatherIcon?.toLowerCase() || 'default'}`}>
         <div class="message">Here's your playlist created for</div>
         
         <div class="weather">
             <!-- info pulled from the weather API -->
             <div class="logo">
-                <img src={`/assets/${weather}.png`} alt={weather} />
+                <img src={`/assets/${weatherIcon}.png`} alt={weatherIcon} />
             </div>
             <div class="weather-text">
                 <!-- <div class="location">Davis, California</div>
                 <div class="temperature">88&deg; Sunny</div> -->
                 <div class="location">{location}</div>
-                <div class="temperature">{fullWeather}</div>
+                <!-- <div class="temperature">{fullWeather}</div> -->
+                <div class="temperature">{temperature}</div>
             </div>
         </div>
 
