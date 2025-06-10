@@ -4,6 +4,7 @@
     import { logIn } from "./SpotifyTest.svelte";
     import { logOut } from "./SpotifyTest.svelte";
     import { fetchPlaylist } from "./SpotifyTest.svelte";
+    import { refreshTokenClick } from "./SpotifyTest.svelte";
     import { push } from "svelte-spa-router";
 
     let allTrackIds = [];
@@ -83,7 +84,8 @@
     }
 
     async function handleChangeLocation() {
-        await logOut();
+        // await logOut();
+        await refreshTokenClick();
         // await logIn();
         push("/location");
     }

@@ -21,11 +21,11 @@
     //         push("/location");
     //     }
     // });
-    // const currentToken = {
-    //     get access_token() { return localStorage.getItem('access_token'); },
-    //     get refresh_token() { return localStorage.getItem('refresh_token'); },
-    //     get expires_in() { return localStorage.getItem('refresh_in') },
-    //     get expires() { return localStorage.getItem('expires')},
+    const currentToken = {
+        get access_token() { return localStorage.getItem('access_token'); },
+        get refresh_token() { return localStorage.getItem('refresh_token'); },
+        get expires_in() { return localStorage.getItem('refresh_in') },
+        get expires() { return localStorage.getItem('expires')},
 
         save: function (response) {
             const { access_token, refresh_token, expires_in } = response;
@@ -211,6 +211,11 @@
         });
 
         return await response.json();
+    }
+
+    export async function refreshTokenClick() {
+        const token = await refreshToken();
+        currentToken.save(token);
     }
 
     // ^^ Code taken from spotify ^^
