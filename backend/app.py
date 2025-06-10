@@ -8,9 +8,11 @@ from flask_cors import CORS
 import requests
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True, origins=["http://127.0.0.1:5173"])
 app.secret_key = os.urandom(24)
-CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
-clientId = "0553802b6f0b4a3f8357fabcbecc3817"
+
+#CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
+#clientId = "0553802b6f0b4a3f8357fabcbecc3817"
 
 @app.route('/weather/<string:lat>/<string:lon>',methods=['GET'])
 def getWeatherCode(lon, lat):

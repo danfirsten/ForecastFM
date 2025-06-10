@@ -1,6 +1,10 @@
 <script>
-    import './Playlist.css';
-    import { onMount } from 'svelte';
+    import "./Playlist.css";
+    import { onMount } from "svelte";
+    import { logIn } from "./SpotifyTest.svelte";
+    import { logOut } from "./SpotifyTest.svelte";
+    import { fetchPlaylist } from "./SpotifyTest.svelte";
+    import { push } from "svelte-spa-router";
 
     let allTrackIds = [];
     let displayedTracks = [];
@@ -10,15 +14,20 @@
         loadTrackIds();
     });
 
-    function loadTrackIds() {
+    async function loadTrackIds() {
         // Get track IDs from localStorage
+
+        //console.log(localStorage.getItem("weather"));
+        await fetchPlaylist();
         let _trackIds = localStorage.getItem("trackIds");
         const trackIds = _trackIds ? JSON.parse(_trackIds) : [];
-        
+
         console.log("Loaded track IDs:", trackIds);
-        
+
         if (trackIds.length === 0) {
-            console.log("No track IDs found in localStorage, using placeholder data");
+            console.log(
+                "No track IDs found in localStorage, using placeholder data",
+            );
             // Placeholder track IDs for testing
             allTrackIds = [
                 "4uLU6hMCjMI75M1A2tKUQC", // Never Gonna Give You Up - Rick Astley
@@ -50,12 +59,12 @@
                 "3cfOd4CMv2snFaKAnMdnvK", // Midnight City - M83
                 "6f70BpkMDtFoIGwdaHMdpc", // Thunder - Imagine Dragons
                 "6dBUzqjtbnIz1YMXvdyQKE", // Happier - Marshmello ft. Bastille
-                "5ygDXis42ncn6kYG14lEZG"  // Heat Waves - Glass Animals
+                "5ygDXis42ncn6kYG14lEZG", // Heat Waves - Glass Animals
             ];
         } else {
             allTrackIds = trackIds;
         }
-        
+
         // Randomly sample 20 songs
         shuffleAndDisplayTracks();
         isLoading = false;
@@ -73,65 +82,74 @@
         shuffleAndDisplayTracks();
     }
 
-    function handleChangeLocation() {
-        // TODO - add routing
+    async function handleChangeLocation() {
+        await logOut();
+        // await logIn();
+        push("/location");
     }
 
-    function handleLogout() {
-        localStorage.removeItem('trackIds');
-        localStorage.removeItem('spotify_access_token');
-        // TODO - add routing
-    }
+    let location = localStorage.getItem("location");
+    let weather = localStorage.getItem("weather");
+    let temperature = localStorage.getItem("temperature");
+    let fullWeather = `${temperature}\u00B0F ${weather}`;
 </script>
 
 <div>
     <div class="header">
-        <div class="title">ForecastFM</div>
-        <div class="location-button" on:click={handleChangeLocation}>Change Location</div>
-        <div class="logout-button" on:click={handleLogout}>Logout</div>
-    </div>
-    
-    <div class="message">Here's your curated playlist created for</div>
-    
-    <div class="weather">
-        <!-- info pulled from the weather API -->
-        <!-- replace placeholders with stuff from Weather API  -->
-        <div class="logo">
-            <img src="/assets/Sunny.png" alt="Sunny" />
+        <div class="playlist-title">ForecastFM</div>
+        <div class="location-button" on:click={handleChangeLocation}>
+            Change Location
         </div>
-        <div class="weather-text">
-            <div class="location">Davis, California</div>
-            <div class="temperature">88&deg; Sunny</div>
-        </div>
+        <button class="logout-button" on:click={logOut}>Logout</button>
     </div>
 
-    {#if isLoading}
-        <div class="loading">
-            <p>Loading your playlist...</p>
+    <div
+        class={`page-container weather-${weather?.toLowerCase() || "default"}`}
+    >
+        <div class="message">Here's your playlist created for</div>
+
+        <div class="weather">
+            <!-- info pulled from the weather API -->
+            <div class="logo">
+                <img src={`/assets/${weather}.png`} alt={weather} />
+            </div>
+            <div class="weather-text">
+                <!-- <div class="location">Davis, California</div>
+                <div class="temperature">88&deg; Sunny</div> -->
+                <div class="location">{location}</div>
+                <div class="temperature">{fullWeather}</div>
+            </div>
         </div>
-    {:else if displayedTracks.length === 0}
-        <div class="empty-state">
-            <p>No tracks found.</p>
-        </div>
-    {:else}
-        <div class="refresh-container">
-            <button on:click={refreshPlaylist} class="refresh-btn">🔄 Refresh</button>
-        </div>
-        
-        <div class="playlist">
-            {#each displayedTracks as trackId, index (trackId)}
-                <div class="song-embed">
-                    <iframe
-                        title="Spotify Track {index + 1}"
-                        style="border-radius:12px"
-                        src="https://open.spotify.com/embed/track/{trackId}?utm_source=generator&theme=0"
-                        width="100%"
-                        height="100"
-                        frameBorder="0"
-                        loading="lazy"
-                    ></iframe>
-                </div>
-            {/each}
-        </div>
-    {/if}
+
+        {#if isLoading}
+            <div class="loading">
+                <p>Loading your playlist...</p>
+            </div>
+        {:else if displayedTracks.length === 0}
+            <div class="empty-state">
+                <p>No tracks found.</p>
+            </div>
+        {:else}
+            <div class="refresh-container">
+                <button on:click={refreshPlaylist} class="refresh-btn"
+                    >Refresh</button
+                >
+            </div>
+
+            <div class="playlist">
+                {#each displayedTracks as trackId, index (trackId)}
+                    <div class="song-embed">
+                        <iframe
+                            title="Spotify Track {index + 1}"
+                            style="border-radius:12px"
+                            src="https://open.spotify.com/embed/track/{trackId}?utm_source=generator&theme=0"
+                            width="100%"
+                            height="100"
+                            frameBorder="0"
+                        ></iframe>
+                    </div>
+                {/each}
+            </div>
+        {/if}
+    </div>
 </div>
