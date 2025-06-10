@@ -9,9 +9,6 @@
   window.onload = (async () => {
       document.getElementById("forecast-button")?.addEventListener("click", logIn);
   });   
-  function goToLocation() {
-    push('/location');
-  }
 </script>
 
 <div class="landing-outer">

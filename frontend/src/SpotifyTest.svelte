@@ -11,23 +11,23 @@
     const tokenEndpoint = "https://accounts.spotify.com/api/token";
     const scope = 'user-read-private user-read-email';
  
-    // const currentToken = {
-    //     get access_token() { return localStorage.getItem('access_token'); },
-    //     get refresh_token() { return localStorage.getItem('refresh_token'); },
-    //     get expires_in() { return localStorage.getItem('refresh_in') },
-    //     get expires() { return localStorage.getItem('expires')},
+    const currentToken = {
+        get access_token() { return localStorage.getItem('access_token') || null; },
+        get refresh_token() { return localStorage.getItem('refresh_token') || null; },
+        get expires_in() { return localStorage.getItem('refresh_in') || null },
+        get expires() { return localStorage.getItem('expires') || null },
 
-    //     save: function (response) {
-    //         const { access_token, refresh_token, expires_in } = response;
-    //         localStorage.setItem('access_token', access_token);
-    //         localStorage.setItem('refresh_token', refresh_token);
-    //         localStorage.setItem('expires_in', expires_in);
+        save: function (response) {
+            const { access_token, refresh_token, expires_in } = response;
+            localStorage.setItem('access_token', access_token);
+            localStorage.setItem('refresh_token', refresh_token);
+            localStorage.setItem('expires_in', expires_in);
 
-    //         const now = new Date();
-    //         const expiry = new Date(now.getTime() + (expires_in * 1000));
-    //         localStorage.setItem('expires', expiry);
-    //     }
-    // };
+            const now = new Date();
+            const expiry = new Date(now.getTime() + (expires_in * 1000));
+            localStorage.setItem('expires', expiry.toString());
+        }
+    };
 
 
     let weather = ""; // get weather from weather api
@@ -43,7 +43,8 @@
 
     export async function logIn() {
         await fetchWeather();
-        try {
+        if (code) {
+            try {
             const accessToken = await getAccessToken(clientId, code);
             //console.log(accessToken);
             const spotifyData = await getSpotifyData(accessToken);
@@ -53,12 +54,13 @@
             //console.log(tracks);
                 // TODO - add code to extract specific data from spotify
                 // and add queries to get playlist                 
-        } catch (error) {
-            console.log("error: ", error);
-        //    redirectToSpotify(clientId);
-        }
-        if (code) {
-            console.log("login success"); 
+            } catch (error) {
+                console.log("error: ", error);
+            //    redirectToSpotify(clientId);
+            }
+            const url = new URL(window.location.href);
+            url.searchParams.delete("code");
+            // console.log("login success"); 
             push('/location'); // redirect to locationpage
         } else {
             redirectToSpotify(clientId);
@@ -68,7 +70,7 @@
     export async function logOut() {
         console.log("log out");
         localStorage.clear();
-        push('/');
+        // push('/');
         window.location.href = redirectUrl;
     }
 

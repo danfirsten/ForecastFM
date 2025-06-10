@@ -1,6 +1,8 @@
 <script>
   import './LocationPage.css';
   import { logOut } from './SpotifyTest.svelte';
+  import './SpotifyTest.svelte';
+  import { push } from 'svelte-spa-router';
 
   window.onload = (async () => {
     document.getElementById("logout-btn")?.addEventListener("click", logOut);
