@@ -109,6 +109,24 @@
         //return tracks;
     }
 
+    export async function getUserName() {
+        // get user display name
+        const accessToken = await getAccessToken(clientId, code);
+        const url = "https://api.spotify.com/v1/me";
+
+        const result = await fetch(url, {
+            method: "GET",
+            headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        console.log(result.json());
+        try {
+            let displayName = result.json().display_name;
+            return displayName;
+        } catch {
+            console.error("could not get display name");
+        }
+    }
+
     // vv API Code taken from devloper.spotify.com vv
     async function redirectToSpotify(clientId: string) {
         const verifier = generateCodeVerifier(128);
