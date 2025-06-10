@@ -118,12 +118,17 @@
             method: "GET",
             headers: { Authorization: `Bearer ${accessToken}` },
         });
-        console.log(result.json());
+        //console.log("getUserName(): ", result.json());
         try {
-            let displayName = result.json().display_name;
-            return displayName;
+            const res = await result.json();
+            console.log(res);
+            let display_name = res.display_name;
+            console.log(display_name);
+            return display_name;
+            // console.log("USERNAME: ", display_name);
         } catch {
             console.error("could not get display name");
+            return "";
         }
     }
 
