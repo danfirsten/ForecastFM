@@ -163,7 +163,7 @@
         class="logo-hero"
       />
     </div>
-    <p id="welcome-msg">Welcome {display_name}!</p>
+    <p id="welcome-msg">Welcome!</p>
     <h2 class="location-heading">Check the weather and get your playlist</h2>
     <div class="location-card">
       <div class="location-input-group">
