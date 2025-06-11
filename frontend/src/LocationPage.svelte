@@ -2,7 +2,7 @@
   import "./LocationPage.css";
   import { push } from "svelte-spa-router";
   import { logOut } from "./SpotifyTest.svelte";
-  import { getUserName } from "./SpotifyTest.svelte";
+  // import { getUserName } from "./SpotifyTest.svelte";
   // import { handleLogout } from './Playlist.svelte';
   import { onMount } from "svelte";
 
@@ -15,9 +15,9 @@
   let locationInput = "";
   let display_name = "";
 
-  onMount(async () => {
-    display_name = await getUserName();
-  });
+  // onMount(async () => {
+  //   display_name = await getUserName();
+  // });
 
   async function lookupLocation() {
     if (!status) return;
