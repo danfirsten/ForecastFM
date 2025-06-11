@@ -21,23 +21,31 @@
     //         push("/location");
     //     }
     // });
-    // const currentToken = {
-    //     get access_token() { return localStorage.getItem('access_token'); },
-    //     get refresh_token() { return localStorage.getItem('refresh_token'); },
-    //     get expires_in() { return localStorage.getItem('refresh_in') },
-    //     get expires() { return localStorage.getItem('expires')},
+    const currentToken = {
+        get access_token() {
+            return localStorage.getItem("access_token");
+        },
+        get refresh_token() {
+            return localStorage.getItem("refresh_token");
+        },
+        get expires_in() {
+            return localStorage.getItem("refresh_in");
+        },
+        get expires() {
+            return localStorage.getItem("expires");
+        },
 
-    //     save: function (response) {
-    //         const { access_token, refresh_token, expires_in } = response;
-    //         localStorage.setItem('access_token', access_token);
-    //         localStorage.setItem('refresh_token', refresh_token);
-    //         localStorage.setItem('expires_in', expires_in);
+        save: function (response) {
+            const { access_token, refresh_token, expires_in } = response;
+            localStorage.setItem("access_token", access_token);
+            localStorage.setItem("refresh_token", refresh_token);
+            localStorage.setItem("expires_in", expires_in);
 
-    //         const now = new Date();
-    //         const expiry = new Date(now.getTime() + (expires_in * 1000));
-    //         localStorage.setItem('expires', expiry);
-    //     }
-    // };
+            const now = new Date();
+            const expiry = new Date(now.getTime() + expires_in * 1000);
+            localStorage.setItem("expires", expiry.toString());
+        },
+    };
 
     let weather: any = null; // get weather from weather api
     let tracks = [];
@@ -45,22 +53,24 @@
     let playlist_ids = new Map([
         ["Sunny", "1xaUPRpVCbNaAzgsKrHHMp"],
         ["Rainy", "47S4MBG0EEXwA0GdJUA4Ur"],
+        ["Drizzle", "47S4MBG0EEXwA0GdJUA4Ur"],
         ["Night", "5elnsQozvPDX2m0WEOV1z4"],
-        ["Cloudy", "7dt4XvrQt8U8BQFQBKFV6u"],
+        ["Cloudy", "3oh3NmpgHy2leLcu7oobAr"],
         ["Stormy", "2MI6O6IkwLJ85rJHbARNJ9"],
         ["Snowy", "7bFSWgWheCLGmVDiTkOKPY"],
         ["Foggy", "7caekjzU5qY305TcAzWfpV"],
     ]); // hardcoded playlists, put in env file?
 
     export async function logIn() {
-        weather = await fetchWeather();
+        //console.log(weather);
         try {
             const accessToken = await getAccessToken(clientId, code);
             //console.log(accessToken);
-            const spotifyData = await getSpotifyData(accessToken);
+            // weather = await fetchWeather();
+            // const spotifyData = await getSpotifyData(accessToken);
             //console.log(spotifyData);
-            tracks = await getTracksFromPlaylist(spotifyData);
-            localStorage.setItem("trackIds", JSON.stringify(tracks));
+            // tracks = await getTracksFromPlaylist(spotifyData);
+            // localStorage.setItem("trackIds", JSON.stringify(tracks));
             //console.log(tracks);
             // TODO - add code to extract specific data from spotify
             // and add queries to get playlist
@@ -82,15 +92,54 @@
         window.location.href = redirectUrl;
     }
 
-    async function fetchWeather() {
+    export async function fetchPlaylist() {
         // fetch weather from backend
         // need location
+        console.log("Fetching playlist");
         try {
-            return localStorage.getItem("weather");
-        } catch {
-            return "Sunny";
+            weather = localStorage.getItem("weather");
+        } catch (error) {
+            console.error("couldn't find weather", error);
         }
+        // console.log(weather);
+
+        // assume user is already logged in
+        try {
+            const accessToken = await getAccessToken(clientId, code);
+            const spotifyData = await getSpotifyData(accessToken);
+            tracks = await getTracksFromPlaylist(spotifyData);
+            // console.log("frist track: ", tracks[0]);
+            localStorage.setItem("trackIds", JSON.stringify(tracks));
+            console.log("loaded weather tracks.");
+        } catch {
+            console.log("no access token");
+            // redirectToSpotify(clientId);
+        }
+        //return tracks;
     }
+
+    // export async function getUserName() {
+    //     // get user display name
+    //     const accessToken = await getAccessToken(clientId, code);
+    //     const url = "https://api.spotify.com/v1/me";
+
+    //     const result = await fetch(url, {
+    //         method: "GET",
+    //         headers: { Authorization: `Bearer ${accessToken}` },
+    //     });
+    //     //console.log("getUserName(): ", result.json());
+    //     try {
+    //         const res = await result.json();
+    //         console.log(res);
+    //         let display_name = res.display_name;
+    //         console.log(display_name);
+    //         return display_name;
+    //         // console.log("USERNAME: ", display_name);
+    //     } catch {
+    //         console.error("could not get display name");
+    //         return "";
+    //     }
+    // }
 
     // vv API Code taken from devloper.spotify.com vv
     async function redirectToSpotify(clientId: string) {
@@ -173,6 +222,11 @@
         return await response.json();
     }
 
+    export async function refreshTokenClick() {
+        const token = await refreshToken();
+        currentToken.save(token);
+    }
+
     // ^^ Code taken from spotify ^^
 
     async function getSpotifyData(accessToken: string) {
@@ -184,8 +238,9 @@
             - manually map certain weather patterns to specific playlists and pull 
             10-15 random songs from that playlist when the weather matches
         */
-
-        let playlist_id = playlist_ids.get(weather);
+        let x = localStorage.getItem("weather");
+        let playlist_id = playlist_ids.get(x);
+        // console.log("playlist id: ", playlist_id);
         const url = "https://api.spotify.com/v1/playlists/" + playlist_id;
 
         const result = await fetch(url, {
@@ -197,8 +252,14 @@
     }
 
     async function getTracksFromPlaylist(playlistData: any) {
+        console.log(playlistData);
         let trackIds: Array<string> = [];
-        let trackInfo = playlistData.tracks.items;
+        let trackInfo;
+        try {
+            trackInfo = playlistData.tracks.items;
+        } catch (error) {
+            console.error("couldn't get trackInfo ", error);
+        }
         // itr
         //console.log(trackInfo);
         Object.entries(trackInfo).forEach((entry: Array<any>) => {
