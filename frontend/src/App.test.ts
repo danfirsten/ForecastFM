@@ -9,7 +9,7 @@ import App from "App.svelte";
 */
 import { test } from "vitest";
 import { render, screen } from "@testing-library/svelte";
-import { describe, test, expect, beforeEach } from "vitest";
+import { describe, test, expect, beforeEach, vi } from "vitest";
 import App from "./App.svelte";
 import Playlist from "./Playlist.svelte";
 import LandingPage from "./LandingPage.svelte";
@@ -104,5 +104,45 @@ describe("LocationPage responsive layout", () => {
     expect(input).toBeTruthy();
     expect(title).toBeTruthy();
     expect(card).toBeTruthy();
+  });
+});
+
+describe("Playlist weather display", () => {
+  beforeEach(() => {
+    // mock localStorage for testing
+    localStorage.setItem(
+      "trackIds",
+      JSON.stringify(["4uLU6hMCjMI75M1A2tKUQC", "6habFhsOp2NvshLv26DqMb"])
+    );
+  });
+
+  test("displays location and temperature", () => {
+    const { container } = render(Playlist, {
+      props: {
+        location: "New York, NY",
+        temperature: "72°F Cloudy",
+        weatherCode: 2, // maps to "Cloudy"
+      },
+    });
+
+    const locationEl = container.querySelector(".weather-text .location");
+    expect(locationEl?.textContent).toBe("New York, NY");
+
+    const temperatureEl = container.querySelector(".weather-text .temperature");
+    expect(temperatureEl?.textContent).toBe("72°F Cloudy");
+  });
+
+  test("displays correct weather icon", () => {
+    const { container } = render(Playlist, {
+      props: {
+        location: "New York, NY",
+        temperature: "72°F Cloudy",
+        weatherCode: 2, // maps to "Cloudy"
+      },
+    });
+
+    const icon = container.querySelector(".logo img");
+    expect(icon?.getAttribute("src")).toBe("/assets/Cloudy.png");
+    expect(icon?.getAttribute("alt")).toBe("Cloudy");
   });
 });

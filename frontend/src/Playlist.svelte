@@ -80,7 +80,7 @@
     }
 
 
-    let weatherCode = 0; 
+    export let weatherCode = 0; 
     $: weatherIcon = getWeatherIcon(weatherCode); 
     function getWeatherIcon(code) {
         if (code === 0) return "Sunny";
@@ -93,8 +93,8 @@
         return "Image"; 
     }
 
-    let location = 'Davis, California';
-    let temperature = '88\u00B0F Sunny';
+    export let location = 'Davis, California';
+    export let temperature = '88\u00B0F Sunny';
 </script>
 
 <div>
