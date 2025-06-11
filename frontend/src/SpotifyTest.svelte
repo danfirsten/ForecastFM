@@ -46,7 +46,7 @@
         ["Sunny", "1xaUPRpVCbNaAzgsKrHHMp"],
         ["Rainy", "47S4MBG0EEXwA0GdJUA4Ur"],
         ["Night", "5elnsQozvPDX2m0WEOV1z4"],
-        ["Cloudy", "3D0JVoKt8aKwhgNPB4gRkg"],
+        ["Cloudy", "3oh3NmpgHy2leLcu7oobAr"],
         ["Stormy", "2MI6O6IkwLJ85rJHbARNJ9"],
         ["Snowy", "7bFSWgWheCLGmVDiTkOKPY"],
         ["Foggy", "7caekjzU5qY305TcAzWfpV"],
@@ -109,28 +109,28 @@
         //return tracks;
     }
 
-    export async function getUserName() {
-        // get user display name
-        const accessToken = await getAccessToken(clientId, code);
-        const url = "https://api.spotify.com/v1/me";
+    // export async function getUserName() {
+    //     // get user display name
+    //     const accessToken = await getAccessToken(clientId, code);
+    //     const url = "https://api.spotify.com/v1/me";
 
-        const result = await fetch(url, {
-            method: "GET",
-            headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        //console.log("getUserName(): ", result.json());
-        try {
-            const res = await result.json();
-            console.log(res);
-            let display_name = res.display_name;
-            console.log(display_name);
-            return display_name;
-            // console.log("USERNAME: ", display_name);
-        } catch {
-            console.error("could not get display name");
-            return "";
-        }
-    }
+    //     const result = await fetch(url, {
+    //         method: "GET",
+    //         headers: { Authorization: `Bearer ${accessToken}` },
+    //     });
+    //     //console.log("getUserName(): ", result.json());
+    //     try {
+    //         const res = await result.json();
+    //         console.log(res);
+    //         let display_name = res.display_name;
+    //         console.log(display_name);
+    //         return display_name;
+    //         // console.log("USERNAME: ", display_name);
+    //     } catch {
+    //         console.error("could not get display name");
+    //         return "";
+    //     }
+    // }
 
     // vv API Code taken from devloper.spotify.com vv
     async function redirectToSpotify(clientId: string) {
