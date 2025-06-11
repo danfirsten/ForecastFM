@@ -1,19 +1,12 @@
-/*
-import { expect, test, vitest } from 'vitest';
-import { mount } from 'svelte';
-import { render, screen, waitFor } from '@testing-library/svelte';
-import preprocess from 'svelte-preprocess';
-import App from "App.svelte";
-// import '@testing-library/jest-dom';
-// import { vi } from 'vitest';
-*/
 import { test } from "vitest";
-import { render, screen } from "@testing-library/svelte";
-import { describe, test, expect, beforeEach, vi } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/svelte";
+import { describe, test, expect, beforeEach, vi, it } from "vitest";
 import App from "./App.svelte";
 import Playlist from "./Playlist.svelte";
 import LandingPage from "./LandingPage.svelte";
 import LocationPage from "./LocationPage.svelte";
+import * as spotifyModule from "./SpotifyTest.svelte";
+import { push } from "svelte-spa-router";
 
 test("App", async () => {
   render(App);
@@ -145,5 +138,77 @@ describe("Playlist weather display", () => {
     const icon = container.querySelector(".logo img");
     expect(icon?.getAttribute("src")).toBe("/assets/Cloudy.png");
     expect(icon?.getAttribute("alt")).toBe("Cloudy");
+  });
+});
+
+// test playlist page playlist display
+const setTrackIds = (ids: string[]) =>
+  localStorage.setItem("trackIds", JSON.stringify(ids));
+
+describe("Playlist - song list rendering", () => {
+  beforeEach(() => localStorage.clear());
+
+  test("renders a playlist with up to 20 songs", () => {
+    const ids = Array.from({ length: 25 }, (_, i) => `track-id-${i}`);
+    setTrackIds(ids);
+
+    const { container } = render(Playlist, {
+      props: {
+        location: "Paris, France",
+        temperature: "65°F Cloudy",
+        weatherCode: 2, // “Cloudy”
+      },
+    });
+
+    const songs = container.querySelectorAll(".playlist .song-embed");
+    expect(songs.length).toBe(20); // capped at 20
+
+    songs.forEach((div) => {
+      const iframe = div.querySelector("iframe");
+      expect(iframe).toBeTruthy();
+      const src = iframe!.getAttribute("src")!;
+      const match = ids.find((id) => src.includes(id));
+      expect(match).toBeTruthy();
+    });
+  });
+
+  test("renders playlist even when fewer than 20 songs supplied", () => {
+    const ids = ["alpha", "beta", "gamma"];
+    setTrackIds(ids);
+
+    const { container } = render(Playlist);
+    const songs = container.querySelectorAll(".playlist .song-embed");
+    expect(songs.length).toBe(3);
+  });
+});
+
+// test landing page get my forecast button
+describe("LandingPage", () => {
+  test("displays the Get My Forecast button", async () => {
+    const { container } = render(LandingPage);
+    const button = container.querySelector("#forecast-button");
+    expect(button).toBeTruthy(); // Checks that the button exists
+    expect(button?.textContent).toMatch(/Get My Forecast/i);
+  });
+
+  test("displays the Get My Forecast button and attaches click listener", async () => {
+    const addEventListenerSpy = vi.spyOn(
+      window.HTMLButtonElement.prototype,
+      "addEventListener"
+    );
+    render(LandingPage);
+
+    // window.onload to simulate browser behavior
+    await window.onload?.();
+
+    const button = document.getElementById("forecast-button");
+    expect(button).not.toBeNull();
+
+    // Check if click listener was added
+    expect(addEventListenerSpy).toHaveBeenCalledWith(
+      "click",
+      expect.any(Function)
+    );
+    addEventListenerSpy.mockRestore();
   });
 });
