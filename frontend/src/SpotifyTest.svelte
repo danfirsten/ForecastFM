@@ -22,21 +22,29 @@
     //     }
     // });
     const currentToken = {
-        get access_token() { return localStorage.getItem('access_token'); },
-        get refresh_token() { return localStorage.getItem('refresh_token'); },
-        get expires_in() { return localStorage.getItem('refresh_in') },
-        get expires() { return localStorage.getItem('expires')},
+        get access_token() {
+            return localStorage.getItem("access_token");
+        },
+        get refresh_token() {
+            return localStorage.getItem("refresh_token");
+        },
+        get expires_in() {
+            return localStorage.getItem("refresh_in");
+        },
+        get expires() {
+            return localStorage.getItem("expires");
+        },
 
         save: function (response) {
             const { access_token, refresh_token, expires_in } = response;
-            localStorage.setItem('access_token', access_token);
-            localStorage.setItem('refresh_token', refresh_token);
-            localStorage.setItem('expires_in', expires_in);
+            localStorage.setItem("access_token", access_token);
+            localStorage.setItem("refresh_token", refresh_token);
+            localStorage.setItem("expires_in", expires_in);
 
             const now = new Date();
-            const expiry = new Date(now.getTime() + (expires_in * 1000));
-            localStorage.setItem('expires', expiry.toString());
-        }
+            const expiry = new Date(now.getTime() + expires_in * 1000);
+            localStorage.setItem("expires", expiry.toString());
+        },
     };
 
     let weather: any = null; // get weather from weather api
@@ -45,6 +53,7 @@
     let playlist_ids = new Map([
         ["Sunny", "1xaUPRpVCbNaAzgsKrHHMp"],
         ["Rainy", "47S4MBG0EEXwA0GdJUA4Ur"],
+        ["Drizzle", "47S4MBG0EEXwA0GdJUA4Ur"],
         ["Night", "5elnsQozvPDX2m0WEOV1z4"],
         ["Cloudy", "3oh3NmpgHy2leLcu7oobAr"],
         ["Stormy", "2MI6O6IkwLJ85rJHbARNJ9"],
