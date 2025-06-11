@@ -84,7 +84,7 @@
     }
 
     async function handleChangeLocation() {
-        // await logOut();
+        await logOut();
         await refreshTokenClick();
         // await logIn();
         push("/location");
