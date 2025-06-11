@@ -107,6 +107,7 @@ describe("LocationPage responsive layout", () => {
   });
 });
 
+// test playlist page weather display
 describe("Playlist weather display", () => {
   beforeEach(() => {
     // mock localStorage for testing
