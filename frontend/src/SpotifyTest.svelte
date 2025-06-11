@@ -21,23 +21,23 @@
     //         push("/location");
     //     }
     // });
-    // const currentToken = {
-    //     get access_token() { return localStorage.getItem('access_token'); },
-    //     get refresh_token() { return localStorage.getItem('refresh_token'); },
-    //     get expires_in() { return localStorage.getItem('refresh_in') },
-    //     get expires() { return localStorage.getItem('expires')},
+    const currentToken = {
+        get access_token() { return localStorage.getItem('access_token'); },
+        get refresh_token() { return localStorage.getItem('refresh_token'); },
+        get expires_in() { return localStorage.getItem('refresh_in') },
+        get expires() { return localStorage.getItem('expires')},
 
-    //     save: function (response) {
-    //         const { access_token, refresh_token, expires_in } = response;
-    //         localStorage.setItem('access_token', access_token);
-    //         localStorage.setItem('refresh_token', refresh_token);
-    //         localStorage.setItem('expires_in', expires_in);
+        save: function (response) {
+            const { access_token, refresh_token, expires_in } = response;
+            localStorage.setItem('access_token', access_token);
+            localStorage.setItem('refresh_token', refresh_token);
+            localStorage.setItem('expires_in', expires_in);
 
-    //         const now = new Date();
-    //         const expiry = new Date(now.getTime() + (expires_in * 1000));
-    //         localStorage.setItem('expires', expiry);
-    //     }
-    // };
+            const now = new Date();
+            const expiry = new Date(now.getTime() + (expires_in * 1000));
+            localStorage.setItem('expires', expiry.toString());
+        }
+    };
 
     let weather: any = null; // get weather from weather api
     let tracks = [];
@@ -211,6 +211,11 @@
         });
 
         return await response.json();
+    }
+
+    export async function refreshTokenClick() {
+        const token = await refreshToken();
+        currentToken.save(token);
     }
 
     // ^^ Code taken from spotify ^^
